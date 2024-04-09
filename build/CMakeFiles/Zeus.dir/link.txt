@@ -1,0 +1,1 @@
+/usr/bin/g++ -g -rdynamic CMakeFiles/Zeus.dir/src/main.cpp.o CMakeFiles/Zeus.dir/src/glad.c.o CMakeFiles/Zeus.dir/src/imgui_spectrum.cpp.o -o Zeus  libImGui.a -lglfw 

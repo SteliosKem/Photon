@@ -1,0 +1,52 @@
+[
+{
+  "directory": "/home/stylianos/Projects/Zeus/build",
+  "command": "/usr/bin/g++  -I/home/stylianos/Downloads/imgui -I/home/stylianos/Downloads/imgui/backends -g -o CMakeFiles/ImGui.dir/home/stylianos/Downloads/imgui/backends/imgui_impl_glfw.cpp.o -c /home/stylianos/Downloads/imgui/backends/imgui_impl_glfw.cpp",
+  "file": "/home/stylianos/Downloads/imgui/backends/imgui_impl_glfw.cpp"
+},
+{
+  "directory": "/home/stylianos/Projects/Zeus/build",
+  "command": "/usr/bin/g++  -I/home/stylianos/Downloads/imgui -I/home/stylianos/Downloads/imgui/backends -g -o CMakeFiles/ImGui.dir/home/stylianos/Downloads/imgui/backends/imgui_impl_opengl3.cpp.o -c /home/stylianos/Downloads/imgui/backends/imgui_impl_opengl3.cpp",
+  "file": "/home/stylianos/Downloads/imgui/backends/imgui_impl_opengl3.cpp"
+},
+{
+  "directory": "/home/stylianos/Projects/Zeus/build",
+  "command": "/usr/bin/g++  -I/home/stylianos/Downloads/imgui -I/home/stylianos/Downloads/imgui/backends -g -o CMakeFiles/ImGui.dir/home/stylianos/Downloads/imgui/imgui.cpp.o -c /home/stylianos/Downloads/imgui/imgui.cpp",
+  "file": "/home/stylianos/Downloads/imgui/imgui.cpp"
+},
+{
+  "directory": "/home/stylianos/Projects/Zeus/build",
+  "command": "/usr/bin/g++  -I/home/stylianos/Downloads/imgui -I/home/stylianos/Downloads/imgui/backends -g -o CMakeFiles/ImGui.dir/home/stylianos/Downloads/imgui/imgui_demo.cpp.o -c /home/stylianos/Downloads/imgui/imgui_demo.cpp",
+  "file": "/home/stylianos/Downloads/imgui/imgui_demo.cpp"
+},
+{
+  "directory": "/home/stylianos/Projects/Zeus/build",
+  "command": "/usr/bin/g++  -I/home/stylianos/Downloads/imgui -I/home/stylianos/Downloads/imgui/backends -g -o CMakeFiles/ImGui.dir/home/stylianos/Downloads/imgui/imgui_draw.cpp.o -c /home/stylianos/Downloads/imgui/imgui_draw.cpp",
+  "file": "/home/stylianos/Downloads/imgui/imgui_draw.cpp"
+},
+{
+  "directory": "/home/stylianos/Projects/Zeus/build",
+  "command": "/usr/bin/g++  -I/home/stylianos/Downloads/imgui -I/home/stylianos/Downloads/imgui/backends -g -o CMakeFiles/ImGui.dir/home/stylianos/Downloads/imgui/imgui_tables.cpp.o -c /home/stylianos/Downloads/imgui/imgui_tables.cpp",
+  "file": "/home/stylianos/Downloads/imgui/imgui_tables.cpp"
+},
+{
+  "directory": "/home/stylianos/Projects/Zeus/build",
+  "command": "/usr/bin/g++  -I/home/stylianos/Downloads/imgui -I/home/stylianos/Downloads/imgui/backends -g -o CMakeFiles/ImGui.dir/home/stylianos/Downloads/imgui/imgui_widgets.cpp.o -c /home/stylianos/Downloads/imgui/imgui_widgets.cpp",
+  "file": "/home/stylianos/Downloads/imgui/imgui_widgets.cpp"
+},
+{
+  "directory": "/home/stylianos/Projects/Zeus/build",
+  "command": "/usr/bin/g++  -I/home/stylianos/Projects/Zeus/include -I/home/stylianos/Downloads/imgui -I/home/stylianos/Downloads/imgui/backends -g -o CMakeFiles/Zeus.dir/src/main.cpp.o -c /home/stylianos/Projects/Zeus/src/main.cpp",
+  "file": "/home/stylianos/Projects/Zeus/src/main.cpp"
+},
+{
+  "directory": "/home/stylianos/Projects/Zeus/build",
+  "command": "/usr/bin/gcc  -I/home/stylianos/Projects/Zeus/include -I/home/stylianos/Downloads/imgui -I/home/stylianos/Downloads/imgui/backends -g -o CMakeFiles/Zeus.dir/src/glad.c.o -c /home/stylianos/Projects/Zeus/src/glad.c",
+  "file": "/home/stylianos/Projects/Zeus/src/glad.c"
+},
+{
+  "directory": "/home/stylianos/Projects/Zeus/build",
+  "command": "/usr/bin/g++  -I/home/stylianos/Projects/Zeus/include -I/home/stylianos/Downloads/imgui -I/home/stylianos/Downloads/imgui/backends -g -o CMakeFiles/Zeus.dir/src/imgui_spectrum.cpp.o -c /home/stylianos/Projects/Zeus/src/imgui_spectrum.cpp",
+  "file": "/home/stylianos/Projects/Zeus/src/imgui_spectrum.cpp"
+}
+]
