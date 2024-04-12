@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Site BuildName="Linux-g++"
-	BuildStamp="20240409-1717-Experimental"
+	BuildStamp="20240410-1348-Experimental"
 	Name="stylianos"
 	Generator="ctest-3.25.1"
 	CompilerName="/usr/bin/g++"
@@ -21,14 +21,14 @@
 	TotalVirtualMemory="2047"
 	TotalPhysicalMemory="31967"
 	LogicalProcessorsPerPhysical="2"
-	ProcessorClockFrequency="2200"
+	ProcessorClockFrequency="3823.22"
 	>
 	<Testing>
-		<StartDateTime>Apr 09 20:45 EEST</StartDateTime>
-		<StartTestTime>1712684701</StartTestTime>
+		<StartDateTime>Apr 10 16:48 EEST</StartDateTime>
+		<StartTestTime>1712756920</StartTestTime>
 		<TestList/>
-		<EndDateTime>Apr 09 20:45 EEST</EndDateTime>
-		<EndTestTime>1712684701</EndTestTime>
+		<EndDateTime>Apr 10 16:48 EEST</EndDateTime>
+		<EndTestTime>1712756920</EndTestTime>
 		<ElapsedMinutes>0</ElapsedMinutes>
 	</Testing>
 </Site>

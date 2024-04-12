@@ -6,6 +6,8 @@
 #include <GLFW/glfw3.h>
 
 #include "imgui_impl_glfw.h"
+#include "image.h"
+
 
 int main() {
     GLFWwindow* window;
@@ -40,10 +42,13 @@ int main() {
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-
+        
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
         ImGui::Begin("Hello");
-        ImGui::Text("text");
+        
+        ImGui::Image((void*)(intptr_t)image(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y), ImGui::GetContentRegionAvail());
         ImGui::End();
+        ImGui::PopStyleVar();
 
         ImGui::EndFrame();
         ImGui::Render();
