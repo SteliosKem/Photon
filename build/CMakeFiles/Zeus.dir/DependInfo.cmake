@@ -11,6 +11,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/stylianos/Projects/Zeus/src/glad.c" "CMakeFiles/Zeus.dir/src/glad.c.o" "gcc" "CMakeFiles/Zeus.dir/src/glad.c.o.d"
   "/home/stylianos/Projects/Zeus/src/imgui_spectrum.cpp" "CMakeFiles/Zeus.dir/src/imgui_spectrum.cpp.o" "gcc" "CMakeFiles/Zeus.dir/src/imgui_spectrum.cpp.o.d"
   "/home/stylianos/Projects/Zeus/src/main.cpp" "CMakeFiles/Zeus.dir/src/main.cpp.o" "gcc" "CMakeFiles/Zeus.dir/src/main.cpp.o.d"
+  "/home/stylianos/Projects/Zeus/src/renderer.cpp" "CMakeFiles/Zeus.dir/src/renderer.cpp.o" "gcc" "CMakeFiles/Zeus.dir/src/renderer.cpp.o.d"
   )
 
 # Targets to which this target links.

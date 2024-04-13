@@ -7,6 +7,7 @@ enable_testing()
 add_executable(Zeus src/main.cpp
     src/glad.c
     src/imgui_spectrum.cpp
+    src/renderer.cpp
 )
 
 target_include_directories(Zeus PRIVATE include)

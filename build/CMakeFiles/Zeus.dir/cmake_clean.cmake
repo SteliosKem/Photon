@@ -5,6 +5,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/Zeus.dir/src/imgui_spectrum.cpp.o.d"
   "CMakeFiles/Zeus.dir/src/main.cpp.o"
   "CMakeFiles/Zeus.dir/src/main.cpp.o.d"
+  "CMakeFiles/Zeus.dir/src/renderer.cpp.o"
+  "CMakeFiles/Zeus.dir/src/renderer.cpp.o.d"
   "Zeus"
   "Zeus.pdb"
 )

@@ -25,7 +25,7 @@ GLuint image(int width, int height, std::vector<Color3>& data) {
         }
     }*/
 
-    float pixels2[width*height*3];
+    float* pixels2 = new float[width*height*3];
     int i2 = 0;
     for (Color3 i : data) {
         pixels2[i2++] = i.x();
@@ -34,5 +34,6 @@ GLuint image(int width, int height, std::vector<Color3>& data) {
     }
 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_FLOAT, pixels2);
+    delete[] pixels2;
     return opengl_texture;
 }
