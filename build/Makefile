@@ -776,6 +776,78 @@ src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Zeus.dir/build.make CMakeFiles/Zeus.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
+src/object.o: src/object.cpp.o
+.PHONY : src/object.o
+
+# target to build an object file
+src/object.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Zeus.dir/build.make CMakeFiles/Zeus.dir/src/object.cpp.o
+.PHONY : src/object.cpp.o
+
+src/object.i: src/object.cpp.i
+.PHONY : src/object.i
+
+# target to preprocess a source file
+src/object.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Zeus.dir/build.make CMakeFiles/Zeus.dir/src/object.cpp.i
+.PHONY : src/object.cpp.i
+
+src/object.s: src/object.cpp.s
+.PHONY : src/object.s
+
+# target to generate assembly for a file
+src/object.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Zeus.dir/build.make CMakeFiles/Zeus.dir/src/object.cpp.s
+.PHONY : src/object.cpp.s
+
+src/object_list.o: src/object_list.cpp.o
+.PHONY : src/object_list.o
+
+# target to build an object file
+src/object_list.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Zeus.dir/build.make CMakeFiles/Zeus.dir/src/object_list.cpp.o
+.PHONY : src/object_list.cpp.o
+
+src/object_list.i: src/object_list.cpp.i
+.PHONY : src/object_list.i
+
+# target to preprocess a source file
+src/object_list.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Zeus.dir/build.make CMakeFiles/Zeus.dir/src/object_list.cpp.i
+.PHONY : src/object_list.cpp.i
+
+src/object_list.s: src/object_list.cpp.s
+.PHONY : src/object_list.s
+
+# target to generate assembly for a file
+src/object_list.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Zeus.dir/build.make CMakeFiles/Zeus.dir/src/object_list.cpp.s
+.PHONY : src/object_list.cpp.s
+
+src/ray.o: src/ray.cpp.o
+.PHONY : src/ray.o
+
+# target to build an object file
+src/ray.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Zeus.dir/build.make CMakeFiles/Zeus.dir/src/ray.cpp.o
+.PHONY : src/ray.cpp.o
+
+src/ray.i: src/ray.cpp.i
+.PHONY : src/ray.i
+
+# target to preprocess a source file
+src/ray.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Zeus.dir/build.make CMakeFiles/Zeus.dir/src/ray.cpp.i
+.PHONY : src/ray.cpp.i
+
+src/ray.s: src/ray.cpp.s
+.PHONY : src/ray.s
+
+# target to generate assembly for a file
+src/ray.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Zeus.dir/build.make CMakeFiles/Zeus.dir/src/ray.cpp.s
+.PHONY : src/ray.cpp.s
+
 src/renderer.o: src/renderer.cpp.o
 .PHONY : src/renderer.o
 
@@ -799,6 +871,30 @@ src/renderer.s: src/renderer.cpp.s
 src/renderer.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Zeus.dir/build.make CMakeFiles/Zeus.dir/src/renderer.cpp.s
 .PHONY : src/renderer.cpp.s
+
+src/shapes.o: src/shapes.cpp.o
+.PHONY : src/shapes.o
+
+# target to build an object file
+src/shapes.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Zeus.dir/build.make CMakeFiles/Zeus.dir/src/shapes.cpp.o
+.PHONY : src/shapes.cpp.o
+
+src/shapes.i: src/shapes.cpp.i
+.PHONY : src/shapes.i
+
+# target to preprocess a source file
+src/shapes.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Zeus.dir/build.make CMakeFiles/Zeus.dir/src/shapes.cpp.i
+.PHONY : src/shapes.cpp.i
+
+src/shapes.s: src/shapes.cpp.s
+.PHONY : src/shapes.s
+
+# target to generate assembly for a file
+src/shapes.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Zeus.dir/build.make CMakeFiles/Zeus.dir/src/shapes.cpp.s
+.PHONY : src/shapes.cpp.s
 
 # Help Target
 help:
@@ -871,9 +967,21 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/object.o"
+	@echo "... src/object.i"
+	@echo "... src/object.s"
+	@echo "... src/object_list.o"
+	@echo "... src/object_list.i"
+	@echo "... src/object_list.s"
+	@echo "... src/ray.o"
+	@echo "... src/ray.i"
+	@echo "... src/ray.s"
 	@echo "... src/renderer.o"
 	@echo "... src/renderer.i"
 	@echo "... src/renderer.s"
+	@echo "... src/shapes.o"
+	@echo "... src/shapes.i"
+	@echo "... src/shapes.s"
 .PHONY : help
 
 

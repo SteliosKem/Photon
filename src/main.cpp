@@ -10,10 +10,16 @@
 #include "imgui_spectrum.h"
 #include "imgui_impl_glfw.h"
 #include "image.h"
+#include "shapes.h"
 
 #include "renderer.h"
+#include "interval.h"
+
+const Interval Interval::empty = Interval(+infinity, -infinity);
+const Interval Interval::universe = Interval(-infinity, +infinity);
 
 int main() {
+    
     GLFWwindow* window;
 
     if (!glfwInit()) {
@@ -55,7 +61,7 @@ int main() {
     ImVec4 clear_color(0.45f, 0.55f, 0.60f, 1.00f);
 
     std::vector<Color3> pixels;
-    
+    bool show = false;
 
     while (!glfwWindowShouldClose(window)) {
         
@@ -95,11 +101,48 @@ int main() {
         }
 
         ImGui::End();
+        
 
+        if (ImGui::BeginMainMenuBar()) {
+            if (ImGui::BeginMenu("File")) {
+                if (ImGui::MenuItem("New Project")) {
+                }
+                if (ImGui::MenuItem("Open", "Ctrl+O")) { 
+                }
+                if (ImGui::MenuItem("Save", "Ctrl+S")) {
+                }
+                if (ImGui::MenuItem("Save as..")) {
+                }
+                ImGui::EndMenu();
+            }
+                
+            
+            if(ImGui::BeginMenu("Edit"))
+            ImGui::EndMenu();
+            if(ImGui::BeginMenu("Scene"))
+            ImGui::EndMenu();
+            ImGui::EndMainMenuBar();
+        }
+        
 
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-        ImGui::Begin("Hello");
+        ImGui::Begin("Viewport");
+        double camz;
+        {
+            ImGui::Begin("Framerate");
+            double min = -10;
+            double max = 10;
+            
+            ImGui::SliderScalar("Camera", ImGuiDataType_Double, &camz, &min, &max, "%.3lf");
+            ImGui::Text("%.3f fps", ImGui::GetIO().Framerate);
+            if(ImGui::Button("Show")) show = true;
+            ImGui::End();
+        }
         Renderer renderer(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y);
+        
+        renderer.world.add(make_shared<Shapes::Sphere>(Point3(0,-100.5,-1), 100));
+        renderer.world.add(make_shared<Shapes::Sphere>(Point3(0,0,-1), 0.5));
+
         pixels = renderer.Render();
     
         ImGui::Image((void*)(intptr_t)image(ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y, pixels), ImGui::GetContentRegionAvail());
@@ -107,11 +150,7 @@ int main() {
         ImGui::End();
         ImGui::PopStyleVar();
 
-        ImGui::Begin("Framerate");
         
-        ImGui::Text("%.3f fps", ImGui::GetIO().Framerate);
-        ImGui::End();
-
         
 
         ImGui::EndFrame();

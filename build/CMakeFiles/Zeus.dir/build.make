@@ -125,12 +125,72 @@ CMakeFiles/Zeus.dir/src/renderer.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Zeus.dir/src/renderer.cpp.s"
 	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/stylianos/Projects/Zeus/src/renderer.cpp -o CMakeFiles/Zeus.dir/src/renderer.cpp.s
 
+CMakeFiles/Zeus.dir/src/ray.cpp.o: CMakeFiles/Zeus.dir/flags.make
+CMakeFiles/Zeus.dir/src/ray.cpp.o: /home/stylianos/Projects/Zeus/src/ray.cpp
+CMakeFiles/Zeus.dir/src/ray.cpp.o: CMakeFiles/Zeus.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stylianos/Projects/Zeus/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/Zeus.dir/src/ray.cpp.o"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Zeus.dir/src/ray.cpp.o -MF CMakeFiles/Zeus.dir/src/ray.cpp.o.d -o CMakeFiles/Zeus.dir/src/ray.cpp.o -c /home/stylianos/Projects/Zeus/src/ray.cpp
+
+CMakeFiles/Zeus.dir/src/ray.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Zeus.dir/src/ray.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/stylianos/Projects/Zeus/src/ray.cpp > CMakeFiles/Zeus.dir/src/ray.cpp.i
+
+CMakeFiles/Zeus.dir/src/ray.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Zeus.dir/src/ray.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/stylianos/Projects/Zeus/src/ray.cpp -o CMakeFiles/Zeus.dir/src/ray.cpp.s
+
+CMakeFiles/Zeus.dir/src/shapes.cpp.o: CMakeFiles/Zeus.dir/flags.make
+CMakeFiles/Zeus.dir/src/shapes.cpp.o: /home/stylianos/Projects/Zeus/src/shapes.cpp
+CMakeFiles/Zeus.dir/src/shapes.cpp.o: CMakeFiles/Zeus.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stylianos/Projects/Zeus/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/Zeus.dir/src/shapes.cpp.o"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Zeus.dir/src/shapes.cpp.o -MF CMakeFiles/Zeus.dir/src/shapes.cpp.o.d -o CMakeFiles/Zeus.dir/src/shapes.cpp.o -c /home/stylianos/Projects/Zeus/src/shapes.cpp
+
+CMakeFiles/Zeus.dir/src/shapes.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Zeus.dir/src/shapes.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/stylianos/Projects/Zeus/src/shapes.cpp > CMakeFiles/Zeus.dir/src/shapes.cpp.i
+
+CMakeFiles/Zeus.dir/src/shapes.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Zeus.dir/src/shapes.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/stylianos/Projects/Zeus/src/shapes.cpp -o CMakeFiles/Zeus.dir/src/shapes.cpp.s
+
+CMakeFiles/Zeus.dir/src/object.cpp.o: CMakeFiles/Zeus.dir/flags.make
+CMakeFiles/Zeus.dir/src/object.cpp.o: /home/stylianos/Projects/Zeus/src/object.cpp
+CMakeFiles/Zeus.dir/src/object.cpp.o: CMakeFiles/Zeus.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stylianos/Projects/Zeus/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/Zeus.dir/src/object.cpp.o"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Zeus.dir/src/object.cpp.o -MF CMakeFiles/Zeus.dir/src/object.cpp.o.d -o CMakeFiles/Zeus.dir/src/object.cpp.o -c /home/stylianos/Projects/Zeus/src/object.cpp
+
+CMakeFiles/Zeus.dir/src/object.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Zeus.dir/src/object.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/stylianos/Projects/Zeus/src/object.cpp > CMakeFiles/Zeus.dir/src/object.cpp.i
+
+CMakeFiles/Zeus.dir/src/object.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Zeus.dir/src/object.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/stylianos/Projects/Zeus/src/object.cpp -o CMakeFiles/Zeus.dir/src/object.cpp.s
+
+CMakeFiles/Zeus.dir/src/object_list.cpp.o: CMakeFiles/Zeus.dir/flags.make
+CMakeFiles/Zeus.dir/src/object_list.cpp.o: /home/stylianos/Projects/Zeus/src/object_list.cpp
+CMakeFiles/Zeus.dir/src/object_list.cpp.o: CMakeFiles/Zeus.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/stylianos/Projects/Zeus/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/Zeus.dir/src/object_list.cpp.o"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Zeus.dir/src/object_list.cpp.o -MF CMakeFiles/Zeus.dir/src/object_list.cpp.o.d -o CMakeFiles/Zeus.dir/src/object_list.cpp.o -c /home/stylianos/Projects/Zeus/src/object_list.cpp
+
+CMakeFiles/Zeus.dir/src/object_list.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Zeus.dir/src/object_list.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/stylianos/Projects/Zeus/src/object_list.cpp > CMakeFiles/Zeus.dir/src/object_list.cpp.i
+
+CMakeFiles/Zeus.dir/src/object_list.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Zeus.dir/src/object_list.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/stylianos/Projects/Zeus/src/object_list.cpp -o CMakeFiles/Zeus.dir/src/object_list.cpp.s
+
 # Object files for target Zeus
 Zeus_OBJECTS = \
 "CMakeFiles/Zeus.dir/src/main.cpp.o" \
 "CMakeFiles/Zeus.dir/src/glad.c.o" \
 "CMakeFiles/Zeus.dir/src/imgui_spectrum.cpp.o" \
-"CMakeFiles/Zeus.dir/src/renderer.cpp.o"
+"CMakeFiles/Zeus.dir/src/renderer.cpp.o" \
+"CMakeFiles/Zeus.dir/src/ray.cpp.o" \
+"CMakeFiles/Zeus.dir/src/shapes.cpp.o" \
+"CMakeFiles/Zeus.dir/src/object.cpp.o" \
+"CMakeFiles/Zeus.dir/src/object_list.cpp.o"
 
 # External object files for target Zeus
 Zeus_EXTERNAL_OBJECTS =
@@ -139,10 +199,14 @@ Zeus: CMakeFiles/Zeus.dir/src/main.cpp.o
 Zeus: CMakeFiles/Zeus.dir/src/glad.c.o
 Zeus: CMakeFiles/Zeus.dir/src/imgui_spectrum.cpp.o
 Zeus: CMakeFiles/Zeus.dir/src/renderer.cpp.o
+Zeus: CMakeFiles/Zeus.dir/src/ray.cpp.o
+Zeus: CMakeFiles/Zeus.dir/src/shapes.cpp.o
+Zeus: CMakeFiles/Zeus.dir/src/object.cpp.o
+Zeus: CMakeFiles/Zeus.dir/src/object_list.cpp.o
 Zeus: CMakeFiles/Zeus.dir/build.make
 Zeus: libImGui.a
 Zeus: CMakeFiles/Zeus.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/stylianos/Projects/Zeus/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable Zeus"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/stylianos/Projects/Zeus/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX executable Zeus"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Zeus.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

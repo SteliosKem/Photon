@@ -8,6 +8,10 @@ add_executable(Zeus src/main.cpp
     src/glad.c
     src/imgui_spectrum.cpp
     src/renderer.cpp
+    src/ray.cpp
+    src/shapes.cpp
+    src/object.cpp
+    src/object_list.cpp
 )
 
 target_include_directories(Zeus PRIVATE include)

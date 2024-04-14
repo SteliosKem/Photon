@@ -53,5 +53,25 @@
   "directory": "/home/stylianos/Projects/Zeus/build",
   "command": "/usr/bin/g++  -I/home/stylianos/Projects/Zeus/include -I/home/stylianos/Downloads/imgui -I/home/stylianos/Downloads/imgui/backends -g -o CMakeFiles/Zeus.dir/src/renderer.cpp.o -c /home/stylianos/Projects/Zeus/src/renderer.cpp",
   "file": "/home/stylianos/Projects/Zeus/src/renderer.cpp"
+},
+{
+  "directory": "/home/stylianos/Projects/Zeus/build",
+  "command": "/usr/bin/g++  -I/home/stylianos/Projects/Zeus/include -I/home/stylianos/Downloads/imgui -I/home/stylianos/Downloads/imgui/backends -g -o CMakeFiles/Zeus.dir/src/ray.cpp.o -c /home/stylianos/Projects/Zeus/src/ray.cpp",
+  "file": "/home/stylianos/Projects/Zeus/src/ray.cpp"
+},
+{
+  "directory": "/home/stylianos/Projects/Zeus/build",
+  "command": "/usr/bin/g++  -I/home/stylianos/Projects/Zeus/include -I/home/stylianos/Downloads/imgui -I/home/stylianos/Downloads/imgui/backends -g -o CMakeFiles/Zeus.dir/src/shapes.cpp.o -c /home/stylianos/Projects/Zeus/src/shapes.cpp",
+  "file": "/home/stylianos/Projects/Zeus/src/shapes.cpp"
+},
+{
+  "directory": "/home/stylianos/Projects/Zeus/build",
+  "command": "/usr/bin/g++  -I/home/stylianos/Projects/Zeus/include -I/home/stylianos/Downloads/imgui -I/home/stylianos/Downloads/imgui/backends -g -o CMakeFiles/Zeus.dir/src/object.cpp.o -c /home/stylianos/Projects/Zeus/src/object.cpp",
+  "file": "/home/stylianos/Projects/Zeus/src/object.cpp"
+},
+{
+  "directory": "/home/stylianos/Projects/Zeus/build",
+  "command": "/usr/bin/g++  -I/home/stylianos/Projects/Zeus/include -I/home/stylianos/Downloads/imgui -I/home/stylianos/Downloads/imgui/backends -g -o CMakeFiles/Zeus.dir/src/object_list.cpp.o -c /home/stylianos/Projects/Zeus/src/object_list.cpp",
+  "file": "/home/stylianos/Projects/Zeus/src/object_list.cpp"
 }
 ]
