@@ -43,18 +43,18 @@ std::vector<Color3> Renderer::Render() {
     std::vector<Color3> color_vec;
     for (int j = 0; j < image_height; j++) {
         for (int i = 0; i < image_width; i++) {
-            /auto pixel_center = orig_pixel + (i * pixel_delta_u) + (j * pixel_delta_v);
+            auto pixel_center = orig_pixel + (i * pixel_delta_u) + (j * pixel_delta_v);
             auto ray_direction = pixel_center - camera_center;
             Ray r(camera_center, ray_direction);
 
             color_vec.push_back(ray_color(world, r));
             
-            Color3 pixel_color(0,0,0);
+            /*Color3 pixel_color(0,0,0);
             for (int sample = 0; sample < samples_per_pixel; sample++) {
                 Ray r = get_ray(i, j);
                 pixel_color += ray_color(world, r);
             }
-            color_vec.push_back(pixel_color);
+            color_vec.push_back(pixel_color);*/
         }
     }
     return color_vec;
