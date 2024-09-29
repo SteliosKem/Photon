@@ -1,2 +1,2 @@
-# Zeus
+# Photon
 A Ray Tracing Engine
