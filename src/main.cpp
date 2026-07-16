@@ -2,8 +2,12 @@
 #include <glm/glm.hpp>
 #include "Ray.h"
 #include "Color.h"
+#include "Object.h"
 
-Color ray_color(const Ray& ray) {
+Color ray_color(const Ray& ray, const Sphere& sphere) {
+  if (sphere.hit(ray)) {
+    return Color(0.8, 0.7, 0.1);
+  }
   Vec3 unit_dir = glm::normalize(ray.direction());
   double a = 0.5*(unit_dir.y + 1.0);
   return (1-a) * Color(1, 1, 1) + a * Color(0.5, 0.7, 1.0);
@@ -41,7 +45,7 @@ int main() {
       Vec3 pixel_center = first_pixel_location + (double)i * viewport_du + (double)j * viewport_dv;
       Vec3 ray_dir = pixel_center - CAMERA_CENTER;
       Ray ray(CAMERA_CENTER, ray_dir);
-      Color pixel_color = ray_color(ray);
+      Color pixel_color = ray_color(ray, Sphere(Vec3(0, 0, -1), 0.5));
       write_color(std::cout, pixel_color);
     }
   }
