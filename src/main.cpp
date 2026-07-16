@@ -5,8 +5,11 @@
 #include "Object.h"
 
 Color ray_color(const Ray& ray, const Sphere& sphere) {
-  if (sphere.hit(ray)) {
-    return Color(0.8, 0.7, 0.1);
+  double t = sphere.hit(ray);
+  // Respond only to sphere in front
+  if (t > 0.0) {
+    Vec3 normal = glm::normalize(ray.at(t) - sphere.center());
+    return 0.5 * (Color(normal.x+1, normal.y+1, normal.z+1));
   }
   Vec3 unit_dir = glm::normalize(ray.direction());
   double a = 0.5*(unit_dir.y + 1.0);

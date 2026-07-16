@@ -11,7 +11,7 @@ public:
     const Vec3& center() const { return m_center; }
     const double radius() const { return m_radius; }
 
-    bool hit(const Ray& ray) const;
+    double hit(const Ray& ray) const;
 private:
     Vec3 m_center;
     double m_radius;
