@@ -1,8 +1,9 @@
 #include "Camera.h"
 #include <iostream>
 #include "Color.h"
+#include "Utility.h"
 
-Color Camera::ray_color(const Ray& ray, const Object& object) {
+Color Camera::ray_color(const Ray& ray, const Object& object) const {
     HitInfo info = object.hit(ray, Interval(0, INF));
     if (info)
         return 0.5 * (info->normal + Color(1, 1, 1));
@@ -37,11 +38,21 @@ void Camera::render(const Object& scene) {
         std::clog << "\rScanlines remaining: " << (m_image_height - j) << ' ' << std::flush;
 
         for (int i = 0; i < m_image_width; i++) {
-            Vec3 pixel_center = m_first_pixel_location + (double)i * m_viewport_du + (double)j * m_viewport_dv;
-            Vec3 ray_dir = pixel_center - m_camera_center;
-            Ray ray(m_camera_center, ray_dir);
-            Color pixel_color = ray_color(ray, scene);
-            write_color(std::cout, pixel_color);
+            Color pixel_color = Color(0, 0, 0);
+            for(int sample = 0; sample < m_samples_per_pixel; sample++) {
+                Ray ray = get_ray(i, j);
+                pixel_color += ray_color(ray, scene);
+            }
+            write_color(std::cout, (1.0 / m_samples_per_pixel) * pixel_color);
         }
     }
+}
+
+Ray Camera::get_ray(int i, int j) const {
+    Vec3 offset(random_double() - 0.5, random_double() - 0.5, 0);
+    Vec3 pixel_sample = m_first_pixel_location + (i + offset.x) * m_viewport_du + (j + offset.y) * m_viewport_dv;
+    Vec3 ray_origin = m_camera_center;
+    Vec3 ray_dir = pixel_sample - m_camera_center;
+
+    return Ray(ray_origin, ray_dir);
 }

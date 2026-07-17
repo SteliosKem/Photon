@@ -5,15 +5,18 @@
 
 class Camera {
 public:
-    Camera() : m_aspect_ratio(16.0/9.0), m_image_width(400) { init(); }
-    Camera(double aspect_ratio, double image_width) : m_aspect_ratio(aspect_ratio), m_image_width(image_width) { init(); }
+    Camera() : m_aspect_ratio(16.0/9.0), m_image_width(400), m_samples_per_pixel(100) { init(); }
+    Camera(double aspect_ratio, double image_width, int samples) 
+        : m_aspect_ratio(aspect_ratio), m_image_width(image_width), m_samples_per_pixel(samples) { init(); }
 
     void render(const Object& scene);
 private:
     void init();
-    Color ray_color(const Ray& ray, const Object& obj);
+    Color ray_color(const Ray& ray, const Object& obj) const;
+    Ray get_ray(int i, int j) const;
 private:
     double m_aspect_ratio;
+    int m_samples_per_pixel;
 
     int m_image_width;
     int m_image_height;

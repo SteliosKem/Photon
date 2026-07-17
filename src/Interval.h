@@ -15,6 +15,7 @@ public:
 
     double max() const { return m_max; }
     double min() const { return m_min; }
+    double clamp(double x) const { if(x < m_min) return m_min; if (x > m_max) return m_max; return x;}
 private:
     double m_min;
     double m_max;
