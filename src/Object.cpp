@@ -6,12 +6,12 @@ void _HitInfo::set_face_normal(const Ray& ray, const Vec3& outward_normal) {
     normal = front_face ? outward_normal : -outward_normal;
 }
 
-HitInfo ObjectList::hit(const Ray& ray, double t_min, double t_max) const {
+HitInfo ObjectList::hit(const Ray& ray, const Interval& interval) const {
     _HitInfo info{};
     bool hit_anything = false;
-    double closest = t_max;
+    double closest = interval.max();
     for(const shared_ptr<Object>& obj : m_objects) {
-        HitInfo h = obj->hit(ray, t_min, t_max);
+        HitInfo h = obj->hit(ray, interval);
         if(h && h->ray_t < closest) {
             hit_anything = true;
             closest = h->ray_t;
@@ -26,7 +26,7 @@ void ObjectList::add(shared_ptr<Object> obj) {
     m_objects.push_back(obj);
 }
 
-HitInfo Sphere::hit(const Ray& ray, double t_min, double t_max) const {
+HitInfo Sphere::hit(const Ray& ray, const Interval& interval) const {
     Vec3 oc = m_center - ray.origin();
     double a = glm::dot(ray.direction(), ray.direction());
     double b = -2.0 * glm::dot(oc, ray.direction());
@@ -35,9 +35,9 @@ HitInfo Sphere::hit(const Ray& ray, double t_min, double t_max) const {
     if(discriminant < 0) return {};
     // Set smallest t value for given ray with respect to t_min & t_max
     double t = (-b - sqrt(discriminant)) / (2.0*a);
-    if(t <= t_min || t >= t_max) {
+    if(!interval.surrounds(t)) {
         t = -b + sqrt(discriminant) / (2.0*a);
-        if(t <= t_min || t >= t_max) return std::nullopt;
+        if(!interval.surrounds(t)) return std::nullopt;
     }
     _HitInfo info{
         Vec3(ray.at(t)),

@@ -4,6 +4,7 @@
 #include "Ray.h"
 #include <memory>
 #include <optional>
+#include "Interval.h"
 
 struct _HitInfo {
     Vec3 point;
@@ -20,7 +21,7 @@ class Object {
 public:
     virtual ~Object() = default;
 
-    virtual HitInfo hit(const Ray& ray, double t_min, double t_max) const = 0;
+    virtual HitInfo hit(const Ray& ray, const Interval& interval) const = 0;
 };
 
 class ObjectList : public Object {
@@ -30,7 +31,7 @@ public:
     ObjectList(const std::vector<shared_ptr<Object>>& objs) : m_objects(objs) {}
 
     void add(shared_ptr<Object> obj);
-    HitInfo hit(const Ray& ray, double t_min, double t_max) const override;
+    HitInfo hit(const Ray& ray, const Interval& interval) const override;
 private:
     std::vector<std::shared_ptr<Object>> m_objects;
 };
@@ -43,7 +44,7 @@ public:
     const Vec3& center() const { return m_center; }
     const double radius() const { return m_radius; }
 
-    HitInfo hit(const Ray& ray, double t_min, double t_max) const override;
+    HitInfo hit(const Ray& ray, const Interval& interval) const override;
 private:
     Vec3 m_center;
     double m_radius;

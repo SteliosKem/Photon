@@ -12,6 +12,9 @@ public:
 
     const static Interval empty;
     const static Interval R;
+
+    double max() const { return m_max; }
+    double min() const { return m_min; }
 private:
     double m_min;
     double m_max;
