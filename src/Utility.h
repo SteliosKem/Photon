@@ -26,3 +26,27 @@ inline double random_double() {
 inline double random_double(double min, double max) {
     return min + (max-min)*random_double();
 }
+
+inline Vec3 random_vec() {
+    return Vec3(random_double(), random_double(), random_double());
+}
+
+inline Vec3 random_vec(double min, double max) {
+    return Vec3(random_double(min, max), random_double(min, max), random_double(min, max));
+}
+
+inline Vec3 random_unit_vec() {
+    Vec3 vec = random_vec(-1, 1);
+    return glm::normalize(vec);
+}
+
+inline Vec3 random_on_hemisphere(const Vec3& normal) {
+    Vec3 vec = random_unit_vec();
+    if(glm::dot(normal, vec) <= 0) return -vec;
+    return vec;
+}
+
+inline double linear_to_gamma(double linear_comp) {
+    if(linear_comp > 0) return std::sqrt(linear_comp);
+    return 0;
+}

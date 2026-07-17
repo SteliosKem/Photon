@@ -3,22 +3,25 @@
 #include "Utility.h"
 #include "Object.h"
 
+struct CameraParams {
+    double aspect_ratio = 16.0/9.0;
+    int image_width = 400;
+    int samples_per_pixel = 200;
+    int max_ray_depth = 50;
+};
+
 class Camera {
 public:
-    Camera() : m_aspect_ratio(16.0/9.0), m_image_width(400), m_samples_per_pixel(100) { init(); }
-    Camera(double aspect_ratio, double image_width, int samples) 
-        : m_aspect_ratio(aspect_ratio), m_image_width(image_width), m_samples_per_pixel(samples) { init(); }
+    Camera() { init(); }
+    Camera(const CameraParams& params) : m_params(params) { init(); }
 
     void render(const Object& scene);
 private:
     void init();
-    Color ray_color(const Ray& ray, const Object& obj) const;
+    Color ray_color(const Ray& ray, const Object& obj, int depth) const;
     Ray get_ray(int i, int j) const;
 private:
-    double m_aspect_ratio;
-    int m_samples_per_pixel;
-
-    int m_image_width;
+    CameraParams m_params{};
     int m_image_height;
 
 // Viewport Parameters
