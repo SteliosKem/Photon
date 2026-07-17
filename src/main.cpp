@@ -1,16 +1,14 @@
 #include <iostream>
 #include <glm/glm.hpp>
+#include <memory>
 #include "Ray.h"
 #include "Color.h"
 #include "Object.h"
 
-Color ray_color(const Ray& ray, const Sphere& sphere) {
-  double t = sphere.hit(ray);
-  // Respond only to sphere in front
-  if (t > 0.0) {
-    Vec3 normal = glm::normalize(ray.at(t) - sphere.center());
-    return 0.5 * (Color(normal.x+1, normal.y+1, normal.z+1));
-  }
+Color ray_color(const Ray& ray, const Object& object) {
+  HitInfo info = object.hit(ray, 0, INF);
+  if (info)
+    return 0.5 * (info->normal + Color(1, 1, 1));
   Vec3 unit_dir = glm::normalize(ray.direction());
   double a = 0.5*(unit_dir.y + 1.0);
   return (1-a) * Color(1, 1, 1) + a * Color(0.5, 0.7, 1.0);
@@ -37,6 +35,12 @@ int main() {
   const Vec3 upper_left = CAMERA_CENTER - Vec3(0, 0, FOCAL_LENGTH) - 0.5 * (viewport_u + viewport_v);
   const Vec3 first_pixel_location = upper_left + 0.5 * (viewport_du + viewport_dv);
 
+  // Scene
+
+  ObjectList scene;
+  scene.add(make_shared<Sphere>(Vec3(0, 0, -1), 0.5));
+  scene.add(make_shared<Sphere>(Vec3(0, -100.5, -1), 100));
+
   // Render
 
   std::cout << "P3\n" << IMAGE_WIDTH << " " << IMAGE_HEIGHT << "\n255\n";
@@ -48,7 +52,7 @@ int main() {
       Vec3 pixel_center = first_pixel_location + (double)i * viewport_du + (double)j * viewport_dv;
       Vec3 ray_dir = pixel_center - CAMERA_CENTER;
       Ray ray(CAMERA_CENTER, ray_dir);
-      Color pixel_color = ray_color(ray, Sphere(Vec3(0, 0, -1), 0.5));
+      Color pixel_color = ray_color(ray, scene);
       write_color(std::cout, pixel_color);
     }
   }
