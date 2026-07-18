@@ -28,9 +28,10 @@ private:
 
 class Metal : public Material {
 public:
-    Metal(const Color& albedo) : m_albedo(albedo) {}
+    Metal(const Color& albedo, double fuzz) : m_albedo(albedo), m_fuzz(fuzz) {}
 
     Scattering scatter(const Ray& in, const HitInfo& info) const override;
 private:
     Color m_albedo;
+    double m_fuzz;
 };
