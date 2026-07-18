@@ -18,37 +18,43 @@ Color Camera::ray_color(const Ray& ray, const Object& object, int depth) const {
 }
 
 void Camera::init() {
-    m_image_height = std::max((int)(m_params.image_width / m_params.aspect_ratio), 1);
-
+    m_image_height = std::max((int)(m_attributes.image_width / m_attributes.aspect_ratio), 1);
+    m_camera_center = m_attributes.pos;
 // Viewport Parameters
 
-    m_focal_length = 1.0;
-    m_viewport_height = 2.0;
-    m_viewport_width = m_viewport_height * (double)m_params.image_width / (double)m_image_height;
-    m_camera_center = Vec3(0, 0, 0);
+    m_focal_length = glm::length(m_attributes.direction);
+    double theta = degrees_to_radians(m_attributes.vfov);
+    double h = std::tan(theta/2);
+    m_viewport_height = 2 * h * m_focal_length;
+    m_viewport_width = m_viewport_height * (double)m_attributes.image_width / (double)m_image_height;
+    // Calculate the u,v,w unit basis vectors for the camera coordinate frame.
+    w = glm::normalize(-m_attributes.direction);
+    u = glm::normalize(cross(m_attributes.vup, w));
+    v = cross(w, u);
 
-    m_viewport_u = Vec3(m_viewport_width, 0, 0);
-    m_viewport_v = Vec3(0, -m_viewport_height, 0);
-    m_viewport_du = m_viewport_u / (double)m_params.image_width;
+    // Calculate the vectors across the horizontal and down the vertical viewport edges.
+    m_viewport_u = m_viewport_width * u;    // Vector across viewport horizontal edge
+    m_viewport_v = m_viewport_height * -v;  // Vector down viewport vertical edge
+    m_viewport_du = m_viewport_u / (double)m_attributes.image_width;
     m_viewport_dv = m_viewport_v / (double)m_image_height;
 
-    m_upper_left = m_camera_center - Vec3(0, 0, m_focal_length) - 0.5 * (m_viewport_u + m_viewport_v);
+    m_upper_left = m_camera_center - m_focal_length * w - 0.5 * (m_viewport_u + m_viewport_v);
     m_first_pixel_location = m_upper_left + 0.5 * (m_viewport_du + m_viewport_dv);
 }
 
 void Camera::render(const Object& scene) {
-    std::cout << "P3\n" << m_params.image_width << " " << m_image_height << "\n255\n";
+    std::cout << "P3\n" << m_attributes.image_width << " " << m_image_height << "\n255\n";
 
     for (int j = 0; j < m_image_height; j++) {
         std::clog << "\rScanlines remaining: " << (m_image_height - j) << ' ' << std::flush;
 
-        for (int i = 0; i < m_params.image_width; i++) {
+        for (int i = 0; i < m_attributes.image_width; i++) {
             Color pixel_color = Color(0, 0, 0);
-            for(int sample = 0; sample < m_params.samples_per_pixel; sample++) {
+            for(int sample = 0; sample < m_attributes.samples_per_pixel; sample++) {
                 Ray ray = get_ray(i, j);
-                pixel_color += ray_color(ray, scene, m_params.max_ray_depth);
+                pixel_color += ray_color(ray, scene, m_attributes.max_ray_depth);
             }
-            write_color(std::cout, (1.0 / m_params.samples_per_pixel) * pixel_color);
+            write_color(std::cout, (1.0 / m_attributes.samples_per_pixel) * pixel_color);
         }
     }
 }

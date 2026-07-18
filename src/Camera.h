@@ -3,17 +3,21 @@
 #include "Utility.h"
 #include "Object.h"
 
-struct CameraParams {
+struct CameraAttributes {
     double aspect_ratio = 16.0/9.0;
     int image_width = 400;
     int samples_per_pixel = 200;
     int max_ray_depth = 50;
+    double vfov = 90.0;
+    Vec3 pos = Vec3(0, 0, 0);
+    Vec3 vup = Vec3(0, 1, 0);
+    Vec3 direction = Vec3(0, 0, -1);
 };
 
 class Camera {
 public:
     Camera() { init(); }
-    Camera(const CameraParams& params) : m_params(params) { init(); }
+    Camera(const CameraAttributes& attributes) : m_attributes(attributes) { init(); }
 
     void render(const Object& scene);
 private:
@@ -21,7 +25,7 @@ private:
     Color ray_color(const Ray& ray, const Object& obj, int depth) const;
     Ray get_ray(int i, int j) const;
 private:
-    CameraParams m_params{};
+    CameraAttributes m_attributes{};
     int m_image_height;
 
 // Viewport Parameters
@@ -38,4 +42,6 @@ private:
 
     Vec3 m_upper_left;
     Vec3 m_first_pixel_location;
+
+    Vec3 u, v, w;
 };
