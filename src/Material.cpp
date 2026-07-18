@@ -19,3 +19,30 @@ Scattering Metal::scatter(const Ray& ray, const HitInfo& info) const {
     if(glm::dot(scattering.scattered.direction(), info->normal) <= 0) return std::nullopt;
     return scattering;
 }
+
+Scattering Dielectric::scatter(const Ray& ray, const HitInfo& info) const {
+    _Scattering scatter{};
+    scatter.attenuation = Color(1.0, 1.0, 1.0);
+    double ri = info->front_face ? (1.0/m_refraction_index) : m_refraction_index;
+
+    Vec3 unit_direction = glm::normalize(ray.direction());
+    double cos_theta = std::fmin(dot(-unit_direction, info->normal), 1.0);
+    double sin_theta = std::sqrt(1.0 - cos_theta*cos_theta);
+
+    bool cannot_refract = ri * sin_theta > 1.0;
+    Vec3 direction;
+
+    if (cannot_refract || reflectance(cos_theta, ri) > random_double())
+        direction = reflect(unit_direction, info->normal);
+    else
+        direction = refract(unit_direction, info->normal, ri);
+
+    scatter.scattered = Ray(info->point, direction);
+    return scatter;
+}
+
+double Dielectric::reflectance(double cosine, double refraction_index) {
+    double r0 = (1 - refraction_index) / (1 + refraction_index);
+    r0 = r0*r0;
+    return r0 + (1-r0)*std::pow((1 - cosine),5);
+}

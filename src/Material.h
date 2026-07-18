@@ -35,3 +35,14 @@ private:
     Color m_albedo;
     double m_fuzz;
 };
+
+class Dielectric : public Material {
+public:
+    Dielectric(double refraction_index) : m_refraction_index(refraction_index) {}
+
+    Scattering scatter(const Ray& in, const HitInfo& info) const override;
+private:
+    static double reflectance(double cos, double refraction_index);
+private:
+    double m_refraction_index;
+};
