@@ -1,14 +1,16 @@
 #include "Camera.h"
 #include <iostream>
 #include "Color.h"
+#include "Material.h"
 #include "Utility.h"
 
 Color Camera::ray_color(const Ray& ray, const Object& object, int depth) const {
     if (depth <= 0) return Color(0, 0, 0);
     HitInfo info = object.hit(ray, Interval(0.001, INF));
     if (info) {
-        Vec3 direction = info->normal + random_unit_vec();
-        return 0.5 * ray_color(Ray(info->point, direction), object, depth-1);
+        Scattering s = info->mat->scatter(ray, info);
+        if(s) return s->attenuation * ray_color(s->scattered, object, depth - 1);
+        return Color(0, 0, 0);
     }
     Vec3 unit_dir = glm::normalize(ray.direction());
     double a = 0.5*(unit_dir.y + 1.0);

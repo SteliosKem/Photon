@@ -42,6 +42,7 @@ HitInfo Sphere::hit(const Ray& ray, const Interval& interval) const {
     _HitInfo info{
         Vec3(ray.at(t)),
         glm::normalize(ray.at(t) - m_center),
+        m_mat,
         t
     };
     Vec3 outward_normal = (info.point - m_center) / m_radius;

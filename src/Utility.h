@@ -50,3 +50,13 @@ inline double linear_to_gamma(double linear_comp) {
     if(linear_comp > 0) return std::sqrt(linear_comp);
     return 0;
 }
+
+inline bool near_zero(Vec3 vec) {
+    // Return true if the vector is close to zero in all dimensions.
+    auto s = 1e-8;
+    return (std::fabs(vec.x) < s) && (std::fabs(vec.y) < s) && (std::fabs(vec.z) < s);
+}
+
+inline Vec3 reflect(const Vec3& vec, const Vec3& n) {
+    return vec - 2 * glm::dot(vec, n) * n;
+}

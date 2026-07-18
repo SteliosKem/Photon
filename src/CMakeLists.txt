@@ -5,6 +5,7 @@ add_executable(photon
     Color.cpp
     Object.cpp
     Camera.cpp
+    Material.cpp
 )
 
 target_link_libraries(photon PRIVATE glm::glm)

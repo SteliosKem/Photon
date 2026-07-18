@@ -6,9 +6,13 @@
 #include <optional>
 #include "Interval.h"
 
+// Forward declarations
+class Material;
+
 struct _HitInfo {
     Vec3 point;
     Vec3 normal;
+    shared_ptr<Material> mat;
     double ray_t;
     bool front_face;
 
@@ -39,7 +43,7 @@ private:
 class Sphere : public Object {
 public:
     Sphere() = default;
-    Sphere(const Vec3& center, double radius) : m_center(center), m_radius(std::fmax(0, radius)) {}
+    Sphere(const Vec3& center, double radius, shared_ptr<Material> mat) : m_center(center), m_radius(std::fmax(0, radius)), m_mat(mat) {}
 
     const Vec3& center() const { return m_center; }
     const double radius() const { return m_radius; }
@@ -48,4 +52,5 @@ public:
 private:
     Vec3 m_center;
     double m_radius;
+    shared_ptr<Material> m_mat;
 };
