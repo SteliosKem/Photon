@@ -46,3 +46,7 @@ double Dielectric::reflectance(double cosine, double refraction_index) {
     r0 = r0*r0;
     return r0 + (1-r0)*std::pow((1 - cosine),5);
 }
+
+Color DiffuseLight::emitted(double u, double v, const Vec3& point) const {
+    return m_tex->value(u, v, point);
+}

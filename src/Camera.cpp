@@ -7,14 +7,14 @@
 Color Camera::ray_color(const Ray& ray, const Object& object, int depth) const {
     if (depth <= 0) return Color(0, 0, 0);
     HitInfo info = object.hit(ray, Interval(0.001, INF));
-    if (info) {
-        Scattering s = info->mat->scatter(ray, info);
-        if(s) return s->attenuation * ray_color(s->scattered, object, depth - 1);
-        return Color(0, 0, 0);
-    }
-    Vec3 unit_dir = glm::normalize(ray.direction());
-    double a = 0.5*(unit_dir.y + 1.0);
-    return (1-a) * Color(1, 1, 1) + a * Color(0.5, 0.7, 1.0);
+    if(!info)
+        return m_attributes.background;
+
+    Color emission_color = info->mat->emitted(info->u, info->v, info->point);
+    Scattering s = info->mat->scatter(ray, info);
+    if(!s) return emission_color;
+
+    return s->attenuation * ray_color(s->scattered, object, depth - 1) + emission_color;
 }
 
 void Camera::init() {

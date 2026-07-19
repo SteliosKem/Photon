@@ -12,6 +12,7 @@ struct CameraAttributes {
     Vec3 pos = Vec3(0, 0, 0);
     Vec3 vup = Vec3(0, 1, 0);
     Vec3 direction = Vec3(0, 0, -1);
+    Color background = Color(0, 0, 0);
 };
 
 class Camera {

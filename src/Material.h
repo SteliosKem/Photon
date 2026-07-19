@@ -16,6 +16,7 @@ class Material {
 public:
     virtual ~Material() = default;
     virtual Scattering scatter(const Ray& in, const HitInfo& info) const { return std::nullopt; }
+    virtual Color emitted(double u, double v, const Vec3& point) const { return Color(0, 0, 0); }
 };
 
 class Diffuse : public Material {
@@ -47,4 +48,14 @@ private:
     static double reflectance(double cos, double refraction_index);
 private:
     double m_refraction_index;
+};
+
+class DiffuseLight : public Material {
+public:
+    DiffuseLight(shared_ptr<Texture> texture) : m_tex(texture) {}
+    DiffuseLight(const Color& color) : m_tex(make_shared<SolidColor>(color)) {}
+
+    Color emitted(double u, double v, const Vec3& point) const override;
+private:
+    shared_ptr<Texture> m_tex;
 };
