@@ -24,6 +24,13 @@ HitInfo ObjectList::hit(const Ray& ray, const Interval& interval) const {
 
 void ObjectList::add(shared_ptr<Object> obj) {
     m_objects.push_back(obj);
+    m_bounding_box = AABB(m_bounding_box, obj->bounding_box());
+}
+
+Sphere::Sphere(const Vec3& center, double radius, shared_ptr<Material> mat) : m_center(center), m_radius(std::fmax(0, radius)), m_mat(mat) {
+    double rvec = m_radius;
+    m_bounding_box = AABB(center - Vec3(rvec, rvec, rvec),
+                            center + Vec3(rvec, rvec, rvec));
 }
 
 HitInfo Sphere::hit(const Ray& ray, const Interval& interval) const {

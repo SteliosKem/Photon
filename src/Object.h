@@ -26,6 +26,7 @@ public:
     virtual ~Object() = default;
 
     virtual HitInfo hit(const Ray& ray, const Interval& interval) const = 0;
+    virtual AABB bounding_box() const = 0;
 };
 
 class ObjectList : public Object {
@@ -36,21 +37,28 @@ public:
 
     void add(shared_ptr<Object> obj);
     HitInfo hit(const Ray& ray, const Interval& interval) const override;
+
+    AABB bounding_box() const override { return m_bounding_box; }
+    const std::vector<shared_ptr<Object>>& objects() const { return m_objects; }
+    std::vector<shared_ptr<Object>>& objects() { return m_objects; }
 private:
     std::vector<std::shared_ptr<Object>> m_objects;
+    AABB m_bounding_box;
 };
 
 class Sphere : public Object {
 public:
     Sphere() = default;
-    Sphere(const Vec3& center, double radius, shared_ptr<Material> mat) : m_center(center), m_radius(std::fmax(0, radius)), m_mat(mat) {}
+    Sphere(const Vec3& center, double radius, shared_ptr<Material> mat);
 
     const Vec3& center() const { return m_center; }
     const double radius() const { return m_radius; }
 
     HitInfo hit(const Ray& ray, const Interval& interval) const override;
+    AABB bounding_box() const override { return m_bounding_box; }
 private:
     Vec3 m_center;
     double m_radius;
     shared_ptr<Material> m_mat;
+    AABB m_bounding_box;
 };

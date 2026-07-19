@@ -6,6 +6,7 @@ add_executable(photon
     Object.cpp
     Camera.cpp
     Material.cpp
+    BVH.cpp
 )
 
 target_link_libraries(photon PRIVATE glm::glm)
