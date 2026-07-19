@@ -2,6 +2,7 @@
 #include "Object.h"
 #include "Utility.h"
 #include "Ray.h"
+#include "Texture.h"
 #include <optional>
 
 struct _Scattering {
@@ -19,11 +20,12 @@ public:
 
 class Diffuse : public Material {
 public:
-    Diffuse(const Color& albedo) : m_albedo(albedo) {}
+    Diffuse(shared_ptr<Texture> texture) : m_tex(texture) {}
+    Diffuse(const Color& albedo) : Diffuse(make_shared<SolidColor>(albedo)) {}
 
     Scattering scatter(const Ray& in, const HitInfo& info) const override;
 private:
-    Color m_albedo;
+    shared_ptr<Texture> m_tex;
 };
 
 class Metal : public Material {

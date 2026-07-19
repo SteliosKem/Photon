@@ -6,7 +6,7 @@ Scattering Diffuse::scatter(const Ray& ray, const HitInfo& info) const {
     if(near_zero(scatter_direction)) scatter_direction = info->normal;
     _Scattering scattering{};
     scattering.scattered = Ray(info->point, scatter_direction);
-    scattering.attenuation = m_albedo;
+    scattering.attenuation = m_tex->value(info->u, info->v, info->point);
     return scattering;
 }
 

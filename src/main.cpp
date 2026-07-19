@@ -3,6 +3,7 @@
 #include "Material.h"
 #include "Object.h"
 #include "Camera.h"
+#include "Texture.h"
 #include "Utility.h"
 #include "BVH.h"
 
@@ -12,7 +13,8 @@ int main() {
 
     ObjectList scene;
 
-    auto ground_material = make_shared<Diffuse>(Color(0.5, 0.5, 0.5));
+    auto checker = make_shared<CheckerTexture>(0.32, Color(.2, .3, .1), Color(.9, .9, .9));
+    auto ground_material = make_shared<Diffuse>(checker);
     scene.add(make_shared<Sphere>(Vec3(0,-1000,0), 1000, ground_material));
 
     for (int a = -11; a < 11; a++) {
@@ -61,7 +63,7 @@ int main() {
     attr.vup = Vec3(0, 1, 0);
     attr.vfov = 20;
     attr.image_width = 1200;
-    attr.samples_per_pixel = 10;
+    attr.samples_per_pixel = 100;
     attr.max_ray_depth = 50;
     Camera cam(attr);
     cam.render(scene);

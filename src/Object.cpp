@@ -46,13 +46,22 @@ HitInfo Sphere::hit(const Ray& ray, const Interval& interval) const {
         t = -b + sqrt(discriminant) / (2.0*a);
         if(!interval.surrounds(t)) return std::nullopt;
     }
+    auto[u, v] = get_sphere_uv(ray.at(t));
     _HitInfo info{
         Vec3(ray.at(t)),
         glm::normalize(ray.at(t) - m_center),
         m_mat,
-        t
+        t,
+        u, v
     };
     Vec3 outward_normal = (info.point - m_center) / m_radius;
     info.set_face_normal(ray, outward_normal);
     return info;
+}
+
+std::pair<double, double> Sphere::get_sphere_uv(const Vec3& point) {
+    double theta = std::acos(-point.y);
+    double phi = std::atan2(-point.z, point.x) + PI;
+
+    return std::pair<double, double>(phi / (2*PI), theta / PI);
 }

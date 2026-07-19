@@ -14,6 +14,7 @@ struct _HitInfo {
     Vec3 normal;
     shared_ptr<Material> mat;
     double ray_t;
+    double u, v;
     bool front_face;
 
     void set_face_normal(const Ray& ray, const Vec3& outward_normal);
@@ -56,6 +57,8 @@ public:
 
     HitInfo hit(const Ray& ray, const Interval& interval) const override;
     AABB bounding_box() const override { return m_bounding_box; }
+
+    static std::pair<double, double> get_sphere_uv(const Vec3& point);
 private:
     Vec3 m_center;
     double m_radius;
