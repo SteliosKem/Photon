@@ -5,6 +5,7 @@
 #include <memory>
 #include <optional>
 #include "Interval.h"
+#include "Texture.h"
 
 // Forward declarations
 class Material;

@@ -8,6 +8,7 @@ add_executable(photon
     Material.cpp
     BVH.cpp
     Texture.cpp
+    ConstantMedium.cpp
 )
 
 target_link_libraries(photon PRIVATE glm::glm)

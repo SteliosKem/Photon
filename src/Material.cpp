@@ -50,3 +50,10 @@ double Dielectric::reflectance(double cosine, double refraction_index) {
 Color DiffuseLight::emitted(double u, double v, const Vec3& point) const {
     return m_tex->value(u, v, point);
 }
+
+Scattering Isotropic::scatter(const Ray& ray, const HitInfo& info) const {
+    _Scattering sc;
+    sc.scattered = Ray(info->point, random_unit_vec());
+    sc.attenuation = m_tex->value(info->u, info->v, info->point);
+    return sc;
+}

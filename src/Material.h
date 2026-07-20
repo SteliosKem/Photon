@@ -59,3 +59,13 @@ public:
 private:
     shared_ptr<Texture> m_tex;
 };
+
+class Isotropic : public Material {
+public:
+    Isotropic(shared_ptr<Texture> texture) : m_tex(texture) {}
+    Isotropic(const Color& albedo) : Isotropic(make_shared<SolidColor>(albedo)) {}
+
+    Scattering scatter(const Ray& ray, const HitInfo& info) const override;
+private:
+    shared_ptr<Texture> m_tex;
+};
