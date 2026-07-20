@@ -37,8 +37,8 @@ inline const Interval Interval::R = Interval(-INF, INF);
 
 class AABB {
 public:
-    AABB() {}
-    AABB(const Interval& x, const Interval& y, const Interval& z) : m_x(x), m_y(y), m_z(z) {}
+    AABB() { pad_to_minimums(); }
+    AABB(const Interval& x, const Interval& y, const Interval& z) : m_x(x), m_y(y), m_z(z) { pad_to_minimums(); }
     AABB(const Vec3& a, const Vec3& b) {
         // Treat the two points a and b as extrema for the bounding box, so we don't require a
         // particular minimum/maximum coordinate order.
@@ -46,11 +46,15 @@ public:
         m_x = (a.x <= b.x) ? Interval(a.x, b.x) : Interval(b.x, a.x);
         m_y = (a.y <= b.y) ? Interval(a.y, b.y) : Interval(b.y, a.y);
         m_z = (a.z <= b.z) ? Interval(a.z, b.z) : Interval(b.z, a.z);
+
+        pad_to_minimums();
     }
     AABB(const AABB& box0, const AABB& box1) {
         m_x = Interval(box0.m_x, box1.m_x);
         m_y = Interval(box0.m_y, box1.m_y);
         m_z = Interval(box0.m_z, box1.m_z);
+
+        pad_to_minimums();
     }
 
     const Interval& axis_interval(int n) const {
@@ -96,6 +100,13 @@ public:
 
     const static AABB empty;
     const static AABB universe;
+private:
+    void pad_to_minimums() {
+        const static double delta = 0.0001;
+        if(m_x.size() < delta) m_x.expand(delta);
+        if(m_y.size() < delta) m_y.expand(delta);
+        if(m_z.size() < delta) m_z.expand(delta);
+    }
 private:
     Interval m_x;
     Interval m_y;

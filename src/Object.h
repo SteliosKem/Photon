@@ -66,3 +66,27 @@ private:
     shared_ptr<Material> m_mat;
     AABB m_bounding_box;
 };
+
+class Quad : public Object {
+public:
+    Quad(const Vec3& point, const Vec3& u, const Vec3& v, shared_ptr<Material> mat) : m_point(point), m_u(u), m_v(v), m_mat(mat) { 
+        set_bounding_box();
+        Vec3 n = glm::cross(u, v);
+        m_normal = glm::normalize(n);
+        m_D = glm::dot(m_normal, m_point);
+        m_w = n / glm::dot(n, n);
+    }
+
+    virtual void set_bounding_box();
+    HitInfo hit(const Ray& ray, const Interval& interval) const override;
+    AABB bounding_box() const override { return m_bounding_box; }
+private:
+    virtual bool is_interior(double a, double b, _HitInfo& rec) const;
+private:
+    Vec3 m_point, m_u, m_v;
+    shared_ptr<Material> m_mat;
+    AABB m_bounding_box;
+    Vec3 m_normal;
+    Vec3 m_w;
+    double m_D;
+};

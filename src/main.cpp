@@ -9,67 +9,33 @@
 #include "ConstantMedium.h"
 
 int main() {
+    ObjectList world;
 
-    // Scene
+    auto red   = make_shared<Diffuse>(Color(.65, .05, .05));
+    auto white = make_shared<Diffuse>(Color(.73, .73, .73));
+    auto green = make_shared<Diffuse>(Color(.12, .45, .15));
+    auto light = make_shared<DiffuseLight>(Color(15, 15, 15));
 
-    ObjectList scene;
+    world.add(make_shared<Quad>(Vec3(555,0,0), Vec3(0,555,0), Vec3(0,0,555), green));
+    world.add(make_shared<Quad>(Vec3(0,0,0), Vec3(0,555,0), Vec3(0,0,555), red));
+    world.add(make_shared<Quad>(Vec3(343, 554, 332), Vec3(-130,0,0), Vec3(0,0,-105), light));
+    world.add(make_shared<Quad>(Vec3(0,0,0), Vec3(555,0,0), Vec3(0,0,555), white));
+    world.add(make_shared<Quad>(Vec3(555,555,555), Vec3(-555,0,0), Vec3(0,0,-555), white));
+    world.add(make_shared<Quad>(Vec3(0,0,555), Vec3(555,0,0), Vec3(0,555,0), white));
 
-    auto checker = make_shared<CheckerTexture>(0.32, Color(.2, .3, .1), Color(.9, .9, .9));
-    auto ground_material = make_shared<Diffuse>(checker);
-    auto diff_light = make_shared<DiffuseLight>(Color(8, 8, 8));
-    scene.add(make_shared<Sphere>(Vec3(0,-1000,0), 1000, ground_material));
+    CameraAttributes cam_attr;
+    cam_attr.aspect_ratio      = 1.0;
+    cam_attr.image_width       = 600;
+    cam_attr.samples_per_pixel = 200;
+    cam_attr.max_ray_depth     = 50;
+    cam_attr.background        = Color(0,0,0);
 
-    /*for (int a = -11; a < 11; a++) {
-        for (int b = -11; b < 11; b++) {
-            auto choose_mat = random_double();
-            Vec3 center(a + 0.9*random_double(), 0.2, b + 0.9*random_double());
-
-            if ((center - Vec3(4, 0.2, 0)).length() > 0.9) {
-                shared_ptr<Material> sphere_material;
-
-                if (choose_mat < 0.8) {
-                    // diffuse
-                    auto albedo = random_vec();
-                    sphere_material = make_shared<Diffuse>(albedo);
-                    scene.add(make_shared<Sphere>(center, 0.2, sphere_material));
-                } else if (choose_mat < 0.95) {
-                    // metal
-                    auto albedo = random_vec(0.5, 1);
-                    auto fuzz = random_double(0, 0.5);
-                    sphere_material = make_shared<Metal>(albedo, fuzz);
-                    scene.add(make_shared<Sphere>(center, 0.2, sphere_material));
-                } else {
-                    // glass
-                    sphere_material = make_shared<Dielectric>(1.5);
-                    scene.add(make_shared<Sphere>(center, 0.2, sphere_material));
-                }
-            }
-        }
-    }*/
-
-    //auto material1 = make_shared<Dielectric>(1.5);
-    //scene.add(make_shared<Sphere>(Vec3(0, 1, 0), 1.0, material1));
-    shared_ptr<Object> sphereA = make_shared<Sphere>(Vec3(0, 1, 0), 1.0, make_shared<Diffuse>(Color(1, 1, 1)));
-    scene.add(make_shared<ConstantMedium>(sphereA, 0.5, Color(0.2, 0.2, 0.2)));
-
-    scene.add(make_shared<Sphere>(Vec3(-4, 1, 0), 1.0, diff_light));
-
-    auto material3 = make_shared<Metal>(Vec3(0.7, 0.6, 0.5), 0.0);
-    //scene.add(make_shared<Sphere>(Vec3(4, 1, 0), 1.0, material3));
-
-    scene = ObjectList(make_shared<BVHNode>(scene));
-
-    // Render
-    CameraAttributes attr{};
-    attr.pos = Vec3(5,2,4);
-    attr.direction = Vec3(-13, -3, -13);
-    attr.vup = Vec3(0, 1, 0);
-    attr.vfov = 20;
-    attr.image_width = 1200;
-    attr.samples_per_pixel = 1000;
-    attr.max_ray_depth = 50;
-    Camera cam(attr);
-    cam.render(scene);
+    cam_attr.vfov      = 40;
+    cam_attr.pos       = Vec3(278, 278, -800);
+    cam_attr.direction = Vec3(278, 278, 0) - cam_attr.pos;
+    cam_attr.vup       = Vec3(0,1,0);
+    Camera cam(cam_attr);
+    cam.render(world);
     
     std::clog << "\rDone.                 \n";
     return 0;

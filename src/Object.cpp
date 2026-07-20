@@ -65,3 +65,51 @@ std::pair<double, double> Sphere::get_sphere_uv(const Vec3& point) {
 
     return std::pair<double, double>(phi / (2*PI), theta / PI);
 }
+
+void Quad::set_bounding_box() {
+    AABB diag1 = AABB(m_point, m_point + m_u + m_v);
+    AABB diag2 = AABB(m_point + m_u, m_point + m_v);
+    m_bounding_box = AABB(diag1, diag2);
+}
+
+HitInfo Quad::hit(const Ray& ray, const Interval& interval) const {
+    auto denom = dot(m_normal, ray.direction());
+
+    // No hit if the ray is parallel to the plane.
+    if (std::fabs(denom) < 1e-8)
+        return std::nullopt;
+
+    // Return false if the hit point parameter t is outside the ray interval.
+    auto t = (m_D - dot(m_normal, ray.origin())) / denom;
+    if (!interval.contains(t))
+        return std::nullopt;
+
+    Vec3 intersection = ray.at(t);
+    Vec3 planar_hitpt_vector = intersection - m_point;
+    double alpha = glm::dot(m_w, cross(planar_hitpt_vector, m_v));
+    double beta = glm::dot(m_w, cross(m_u, planar_hitpt_vector));
+
+    _HitInfo rec;
+    if (!is_interior(alpha, beta, rec))
+        return std::nullopt;
+
+    rec.ray_t = t;
+    rec.point = intersection;
+    rec.mat = m_mat;
+    rec.set_face_normal(ray, m_normal);
+
+    return rec;
+}
+
+bool Quad::is_interior(double a, double b, _HitInfo& rec) const {
+    Interval unit_interval = Interval(0, 1);
+    // Given the hit point in plane coordinates, return false if it is outside the
+    // primitive, otherwise set the hit record UV coordinates and return true.
+
+    if (!unit_interval.contains(a) || !unit_interval.contains(b))
+        return false;
+
+    rec.u = a;
+    rec.v = b;
+    return true;
+}
