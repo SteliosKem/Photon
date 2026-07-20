@@ -90,3 +90,5 @@ private:
     Vec3 m_w;
     double m_D;
 };
+
+shared_ptr<ObjectList> box(const Vec3& a, const Vec3& b, shared_ptr<Material> mat);

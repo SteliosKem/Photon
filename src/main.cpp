@@ -23,6 +23,9 @@ int main() {
     world.add(make_shared<Quad>(Vec3(555,555,555), Vec3(-555,0,0), Vec3(0,0,-555), white));
     world.add(make_shared<Quad>(Vec3(0,0,555), Vec3(555,0,0), Vec3(0,555,0), white));
 
+    world.add(box(Vec3(130, 0, 65), Vec3(295, 165, 230), white));
+    world.add(box(Vec3(265, 0, 295), Vec3(430, 330, 460), white));
+
     CameraAttributes cam_attr;
     cam_attr.aspect_ratio      = 1.0;
     cam_attr.image_width       = 600;
