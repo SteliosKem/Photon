@@ -92,3 +92,28 @@ private:
 };
 
 shared_ptr<ObjectList> box(const Vec3& a, const Vec3& b, shared_ptr<Material> mat);
+
+class Translate : public Object {
+public:
+    Translate(shared_ptr<Object> obj, const Vec3& transation) : m_object(obj), m_translation(transation) 
+        { m_bounding_box = m_object->bounding_box() + m_translation; } 
+    HitInfo hit(const Ray& ray, const Interval& interval) const override;
+    AABB bounding_box() const override { return m_bounding_box; }
+private:
+    shared_ptr<Object> m_object;
+    Vec3 m_translation;
+    AABB m_bounding_box;
+};
+
+class RotateY : public Object {
+public:
+    RotateY(shared_ptr<Object> object, double angle);
+
+    HitInfo hit(const Ray& ray, const Interval& interval) const override;
+    AABB bounding_box() const override { return m_bounding_box; }
+private:
+    shared_ptr<Object> m_object;
+    double m_sin;
+    double m_cos;
+    AABB m_bounding_box;
+};

@@ -32,6 +32,14 @@ private:
     double m_max;
 };
 
+inline Interval operator+(const Interval& interval, double displacement) {
+    return Interval(interval.min() + displacement, interval.max() + displacement);
+}
+
+inline Interval operator+(double displacement, const Interval& interval) {
+    return Interval(interval.min() + displacement, interval.max() + displacement);
+}
+
 inline const Interval Interval::empty = Interval();
 inline const Interval Interval::R = Interval(-INF, INF);
 
@@ -98,6 +106,10 @@ public:
         return m_y.size() > m_z.size() ? 1 : 2;
     }
 
+    const Interval& x() const { return m_x; }
+    const Interval& y() const { return m_y; }
+    const Interval& z() const { return m_z; }
+
     const static AABB empty;
     const static AABB universe;
 private:
@@ -112,5 +124,13 @@ private:
     Interval m_y;
     Interval m_z;
 };
+
+inline AABB operator+(const AABB& box, const Vec3& offset) {
+    return AABB(box.x() + offset.x, box.y() + offset.y, box.z() + offset.z);
+}
+
+inline AABB operator+(const Vec3& offset, const AABB& box) {
+    return box + offset;
+}
 
 inline const AABB AABB::empty = AABB(); 

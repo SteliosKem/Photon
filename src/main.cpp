@@ -10,34 +10,46 @@
 
 int main() {
     ObjectList world;
-
-    auto red   = make_shared<Diffuse>(Color(.65, .05, .05));
+    auto red   = make_shared<Metal>(Color(1, 1, 1), 0.1);
     auto white = make_shared<Diffuse>(Color(.73, .73, .73));
-    auto green = make_shared<Diffuse>(Color(.12, .45, .15));
-    auto light = make_shared<DiffuseLight>(Color(15, 15, 15));
+    auto green = make_shared<Metal>(Color(1, 1, 1), 0.1);
+    auto light = make_shared<DiffuseLight>(Color(7, 7, 7));
 
     world.add(make_shared<Quad>(Vec3(555,0,0), Vec3(0,555,0), Vec3(0,0,555), green));
     world.add(make_shared<Quad>(Vec3(0,0,0), Vec3(0,555,0), Vec3(0,0,555), red));
-    world.add(make_shared<Quad>(Vec3(343, 554, 332), Vec3(-130,0,0), Vec3(0,0,-105), light));
+    world.add(make_shared<Quad>(Vec3(113,554,127), Vec3(330,0,0), Vec3(0,0,305), light));
+    world.add(make_shared<Quad>(Vec3(0,555,0), Vec3(555,0,0), Vec3(0,0,555), white));
     world.add(make_shared<Quad>(Vec3(0,0,0), Vec3(555,0,0), Vec3(0,0,555), white));
-    world.add(make_shared<Quad>(Vec3(555,555,555), Vec3(-555,0,0), Vec3(0,0,-555), white));
     world.add(make_shared<Quad>(Vec3(0,0,555), Vec3(555,0,0), Vec3(0,555,0), white));
 
-    world.add(box(Vec3(130, 0, 65), Vec3(295, 165, 230), white));
-    world.add(box(Vec3(265, 0, 295), Vec3(430, 330, 460), white));
+    auto metal = make_shared<Metal>(Color(1, 1, 1), 0.1);
+    auto glass = make_shared<Dielectric>(1.5);
 
-    CameraAttributes cam_attr;
-    cam_attr.aspect_ratio      = 1.0;
-    cam_attr.image_width       = 600;
-    cam_attr.samples_per_pixel = 200;
-    cam_attr.max_ray_depth     = 50;
-    cam_attr.background        = Color(0,0,0);
+    shared_ptr<Object> box1 = box(Vec3(0,0,0), Vec3(165,330,165), glass);
+    box1 = make_shared<RotateY>(box1, 15);
+    box1 = make_shared<Translate>(box1, Vec3(265,0,295));
 
-    cam_attr.vfov      = 40;
-    cam_attr.pos       = Vec3(278, 278, -800);
-    cam_attr.direction = Vec3(278, 278, 0) - cam_attr.pos;
-    cam_attr.vup       = Vec3(0,1,0);
-    Camera cam(cam_attr);
+    shared_ptr<Object> box2 = box(Vec3(0,0,0), Vec3(165,165,165), metal);
+    box2 = make_shared<RotateY>(box2, -18);
+    box2 = make_shared<Translate>(box2, Vec3(130,0,65));
+
+    world.add(box1);
+    world.add(box2);
+
+    CameraAttributes atts;
+   
+    atts.aspect_ratio      = 1.0;
+    atts.image_width       = 600;
+    atts.samples_per_pixel = 1000;
+    atts.max_ray_depth         = 50;
+    atts.background        = Color(0,0,0);
+
+    atts.vfov     = 40;
+    atts.pos      = Vec3(278, 278, 0);
+    atts.direction   = Vec3(1, 0, 0.5);
+    atts.vup      = Vec3(0,1,0);
+
+    Camera cam(atts);
     cam.render(world);
     
     std::clog << "\rDone.                 \n";

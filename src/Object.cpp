@@ -137,3 +137,84 @@ shared_ptr<ObjectList> box(const Vec3& a, const Vec3& b, shared_ptr<Material> ma
 
     return sides;
 }
+
+HitInfo Translate::hit(const Ray& ray, const Interval& interval) const {
+    Ray translated(ray.origin() - m_translation, ray.direction());
+
+    HitInfo info = m_object->hit(translated, interval);
+    if(!info) return std::nullopt;
+
+    info->point += m_translation;
+    return info;
+}
+
+HitInfo RotateY::hit(const Ray& ray, const Interval& interval) const {
+     // Transform the ray from world space to object space.
+
+    auto origin = Vec3(
+        (m_cos * ray.origin().x) - (m_sin * ray.origin().z),
+        ray.origin().y,
+        (m_sin * ray.origin().x) + (m_cos * ray.origin().z)
+    );
+
+    auto direction = Vec3(
+        (m_cos * ray.direction().x) - (m_sin * ray.direction().z),
+        ray.direction().y,
+        (m_sin * ray.direction().x) + (m_cos * ray.direction().z)
+    );
+
+    Ray rotated_ray(origin, direction);
+
+    // Determine whether an intersection exists in object space (and if so, where).
+    HitInfo rec = m_object->hit(rotated_ray, interval);
+    if (!rec)
+        return std::nullopt;
+
+    // Transform the intersection from object space back to world space.
+
+    rec->point = Vec3(
+        (m_cos * rec->point.x) + (m_sin * rec->point.z),
+        rec->point.y,
+        (-m_sin * rec->point.x) + (m_cos * rec->point.z)
+    );
+
+    rec->normal = Vec3(
+        (m_cos * rec->normal.x) + (m_sin * rec->normal.z),
+        rec->normal.y,
+        (-m_sin * rec->normal.x) + (m_cos * rec->normal.z)
+    );
+
+    return rec;
+}
+
+RotateY::RotateY(shared_ptr<Object> object, double angle) : m_object(object) {
+    auto radians = degrees_to_radians(angle);
+    m_sin = std::sin(radians);
+    m_cos = std::cos(radians);
+    m_bounding_box = object->bounding_box();
+
+    Vec3 min( INF,  INF,  INF);
+    Vec3 max(-INF, -INF, -INF);
+
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+            for (int k = 0; k < 2; k++) {
+                auto x = i*m_bounding_box.x().max() + (1-i)*m_bounding_box.x().min();
+                auto y = j*m_bounding_box.y().max() + (1-j)*m_bounding_box.y().min();
+                auto z = k*m_bounding_box.z().max() + (1-k)*m_bounding_box.z().min();
+
+                auto newx =  m_cos*x + m_sin*z;
+                auto newz = -m_sin*x + m_cos*z;
+
+                Vec3 tester(newx, y, newz);
+
+                for (int c = 0; c < 3; c++) {
+                    min[c] = std::fmin(min[c], tester[c]);
+                    max[c] = std::fmax(max[c], tester[c]);
+                }
+            }
+        }
+    }
+
+    m_bounding_box = AABB(min, max);
+}
