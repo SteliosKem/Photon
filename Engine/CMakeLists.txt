@@ -1,6 +1,9 @@
 # The main Photon Engine library. Add new source/header files to this list as the
 # project grows (or group them into subdirectories with their own CMakeLists).
 add_library(PhotonEngine STATIC
+    Core/Window.cpp
+    Core/Application.cpp
+
     RayTracing/Color.cpp
     RayTracing/Object.cpp
     RayTracing/Camera.cpp

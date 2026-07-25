@@ -1,0 +1,26 @@
+#pragma once
+#include <string>
+#include <memory>
+
+using std::string;
+using std::shared_ptr;
+using std::make_shared;
+
+using i32 = int32_t;
+using i64 = int64_t;
+using u8 = uint8_t;
+using u32 = uint32_t;
+using u64 = uint64_t;
+
+namespace Photon {
+    struct Version {
+        u8 a{ 1 };
+        u8 b{ 0 };
+        u8 c{ 0 };
+    };
+
+    enum class ErrorCode {
+        OK,
+        GENERAL_ERROR
+    };
+}
