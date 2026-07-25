@@ -17,6 +17,8 @@ endif()
 
 # ---- Dependencies ----
 find_package(glm REQUIRED)
+find_package(Vulkan REQUIRED)
 
 # ---- Targets ----
-add_subdirectory(src)
+add_subdirectory(Engine)
+add_subdirectory(Editor)

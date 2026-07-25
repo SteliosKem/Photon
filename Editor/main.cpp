@@ -1,15 +1,16 @@
 #include <iostream>
-#include <glm/glm.hpp>
-#include "Material.h"
-#include "Object.h"
-#include "Camera.h"
-#include "Texture.h"
-#include "Utility.h"
-#include "BVH.h"
-#include "ConstantMedium.h"
+/*#include <glm/glm.hpp>
+#include "RayTracing/Material.h"
+#include "RayTracing/Object.h"
+#include "RayTracing/Camera.h"
+#include "RayTracing/Texture.h"
+#include "RayTracing/Utility.h"
+#include "RayTracing/BVH.h"
+#include "RayTracing/ConstantMedium.h"*/
+#include <vulkan/vulkan.h>
 
 int main() {
-    ObjectList world;
+    /*ObjectList world;
     auto red   = make_shared<Metal>(Color(1, 1, 1), 0.1);
     auto white = make_shared<Diffuse>(Color(.73, .73, .73));
     auto green = make_shared<Metal>(Color(1, 1, 1), 0.1);
@@ -40,7 +41,7 @@ int main() {
    
     atts.aspect_ratio      = 1.0;
     atts.image_width       = 600;
-    atts.samples_per_pixel = 1000;
+    atts.samples_per_pixel = 100;
     atts.max_ray_depth         = 50;
     atts.background        = Color(0,0,0);
 
@@ -53,5 +54,39 @@ int main() {
     cam.render(world);
     
     std::clog << "\rDone.                 \n";
+    return 0;*/
+
+    VkInstance instance;
+
+    VkApplicationInfo app_info{};
+    app_info.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
+    app_info.pApplicationName = "Photon Editor";
+    app_info.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
+    app_info.pEngineName = "Photon Engine";
+    app_info.engineVersion = VK_MAKE_VERSION(1, 0, 0);
+    app_info.apiVersion = VK_MAKE_VERSION(1, 0, 0); 
+
+    VkInstanceCreateInfo create_info{};
+    create_info.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+    create_info.pApplicationInfo = &app_info;
+    
+
+    uint32_t extension_count = 0;
+    const char** extensions = new const char*[3];
+
+    extensions[0] = "VK_KHR_surface";
+    extensions[1] = "VK_ext_metal_surface";
+    extensions[2] = "VK_KHR_portability_enumeration";
+    
+    create_info.enabledExtensionCount = extension_count;
+    create_info.ppEnabledExtensionNames = extensions;
+
+    if(!vkCreateInstance(&create_info, 0, &instance)) { 
+        std::cout << "Failed to create Vulkan instance.\n";
+        return 1;
+    }
+
+    std::cout << "Vulkan instance created.\n";
+
     return 0;
 }
