@@ -1,10 +1,14 @@
 #pragma once
 #include <string>
 #include <memory>
+#include <filesystem>
+#include <vector>
 
 using std::string;
 using std::shared_ptr;
 using std::make_shared;
+using std::vector;
+using Filepath = std::filesystem::path;
 
 using i32 = int32_t;
 using i64 = int64_t;
@@ -23,4 +27,6 @@ namespace Photon {
         OK,
         GENERAL_ERROR
     };
+
+    string read_file(const Filepath& path);
 }

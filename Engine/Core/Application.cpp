@@ -3,9 +3,13 @@
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
+const Filepath VERTEX_PATH = "Shaders/basicVertex.vert.spv";
+const Filepath FRAGMENT_PATH = "Shaders/basicFragment.frag.spv";
+
 namespace Photon {
     Application::Application(const ApplicationInfo& app_info)
-        : m_version{ app_info.version }, m_window(app_info.main_window_info) {
+        : m_version{ app_info.version }, m_window(app_info.main_window_info)
+        , m_pipeline(VERTEX_PATH, FRAGMENT_PATH) {
         init();
     }
 

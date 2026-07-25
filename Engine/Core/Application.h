@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Window.h"
+#include "Pipeline.h"
 
 namespace Photon {
     struct ApplicationInfo {
@@ -23,5 +24,7 @@ namespace Photon {
     private:
         Window m_window;
         Version m_version;
+
+        Pipeline m_pipeline;
     };
 }

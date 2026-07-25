@@ -8,3 +8,5 @@ build/
 # Rendered images
 *.ppm
 *.png
+
+compileShaders.sh
