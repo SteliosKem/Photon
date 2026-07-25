@@ -14,6 +14,7 @@ target_link_libraries(PhotonEngine
 PUBLIC
     glm::glm
     Vulkan::Vulkan
+    glfw
 )
 
 # Let sources include project headers as e.g. #include "core/vec3.hpp"

@@ -8,6 +8,7 @@
 #include "RayTracing/BVH.h"
 #include "RayTracing/ConstantMedium.h"*/
 #include <vulkan/vulkan.h>
+#include <GLFW/glfw3.h>
 
 int main() {
     /*ObjectList world;
@@ -56,6 +57,10 @@ int main() {
     std::clog << "\rDone.                 \n";
     return 0;*/
 
+    glfwInit();
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+    GLFWwindow* window = glfwCreateWindow(800, 600, "Photon Engine", nullptr, nullptr);
+
     VkInstance instance;
 
     VkApplicationInfo app_info{};
@@ -87,6 +92,13 @@ int main() {
     }
 
     std::cout << "Vulkan instance created.\n";
+
+    while(!glfwWindowShouldClose(window)) {
+        glfwPollEvents();
+    }
+
+    glfwDestroyWindow(window);
+    glfwTerminate();
 
     return 0;
 }

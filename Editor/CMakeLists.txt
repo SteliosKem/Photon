@@ -7,5 +7,4 @@ target_sources(Photon PRIVATE
 target_link_libraries(Photon
 PRIVATE
     PhotonEngine
-    Vulkan::Vulkan
 )
