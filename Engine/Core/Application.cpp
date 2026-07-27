@@ -47,6 +47,14 @@ namespace Photon {
         }
 
         Logger::info("Initialized Vulkan instance.");
+
+        if (!create_surface()) {
+            Logger::error("Failed to create surface.");
+            return false;
+        }
+
+        Logger::info("Created surface.");
+
     }
 
     bool Application::create_vulkan_instance() {
@@ -98,6 +106,11 @@ namespace Photon {
 
     bool Application::init_volk() {
         return true;
+    }
+
+    bool Application::create_surface() {
+        if (!glfwCreateWindowSurface(m_vulkan_instance, m_window.m_window, nullptr, &m_surface)) return true;
+        return false;
     }
 
     void Application::volk_load_instance(VkInstance instance) {

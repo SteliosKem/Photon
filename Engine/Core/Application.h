@@ -26,6 +26,7 @@ namespace Photon {
         bool init_vulkan();
         bool create_vulkan_instance();
         bool init_volk();
+        bool create_surface();
 
         void volk_load_instance(VkInstance instance);
         void volk_finalize();
@@ -42,6 +43,7 @@ namespace Photon {
         Pipeline m_pipeline;
 
         VkInstance m_vulkan_instance;
+        VkSurfaceKHR m_surface;
 
         constexpr static u32 VULKAN_VERSION{ VK_API_VERSION_1_4 };
         constexpr static u32 MAX_FRAMES_IN_FLIGHT{ 2 };
