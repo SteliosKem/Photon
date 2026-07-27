@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "Logging.h"
 
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
@@ -22,12 +23,8 @@ namespace Photon {
         glfwInit();
         m_window.init_window();
 
-        if (!create_vulkan_instance()) {
-            std::cout << "Failed to initialize Vulkan instance.\n";
-            return false;
-        }
+        if (!init_vulkan()) return false;
 
-        std::cout << "Initialized Vulkan instance.\n";
 
         return true;
     }
@@ -45,14 +42,16 @@ namespace Photon {
     bool Application::init_vulkan() {
         if (!create_vulkan_instance()) {
             // Temp logging
-            std::cout << "Failed to create Vulkan instance.\n";
+            Logger::error("Failed to create Vulkan instance.");
             return false;
         }
+
+        Logger::info("Initialized Vulkan instance.");
     }
 
     bool Application::create_vulkan_instance() {
         if (!init_volk()) {
-            std::cout << "Failed to initialize Volk.\n";
+            Logger::error("Failed to initialize Volk.");
             return false;
         }
 
@@ -116,7 +115,7 @@ namespace Photon {
         void* user_data
     ) {
         if (message_severity >= VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT) {
-            std::cerr << "Validation Layer: " << callback_data->pMessage << std::endl;
+            Logger::error("Validation Layer: " + string(callback_data->pMessage));
         }
 
         return VK_FALSE;

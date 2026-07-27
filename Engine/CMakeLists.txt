@@ -5,6 +5,7 @@ add_library(PhotonEngine STATIC
     Core/Window.cpp
     Core/Application.cpp
     Core/Pipeline.cpp
+    Core/Logging.cpp
 
     RayTracing/Color.cpp
     RayTracing/Object.cpp
@@ -20,6 +21,7 @@ PUBLIC
     glm::glm
     Vulkan::Vulkan
     glfw
+    spdlog::spdlog
 )
 
 # Let sources include project headers as e.g. #include "core/vec3.hpp"
