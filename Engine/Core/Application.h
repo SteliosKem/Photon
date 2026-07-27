@@ -19,12 +19,33 @@ namespace Photon {
 
         ErrorCode run();
     private:
-        void init();
+        bool init();
         void shutdown();
+
+        // Vulkan Initialization
+        bool init_vulkan();
+        bool create_vulkan_instance();
+        bool init_volk();
+
+        void volk_load_instance(VkInstance instance);
+        void volk_finalize();
+
+        static VKAPI_ATTR VkBool32 VKAPI_CALL debug_callback(
+            VkDebugUtilsMessageSeverityFlagBitsEXT message_severity,
+            VkDebugUtilsMessageTypeFlagsEXT message_type,
+            const VkDebugUtilsMessengerCallbackDataEXT* callback_data,
+            void* user_data
+        );
     private:
         Window m_window;
-        Version m_version;
-
+        ApplicationInfo m_app_info;
         Pipeline m_pipeline;
+
+        VkInstance m_vulkan_instance;
+
+        constexpr static u32 VULKAN_VERSION{ VK_API_VERSION_1_4 };
+        constexpr static u32 MAX_FRAMES_IN_FLIGHT{ 2 };
+        constexpr static VkFormat SWAPCHAIN_FORMAT{ VK_FORMAT_B8G8R8A8_SRGB };
+        constexpr static VkFormat DEPTH_FORMAT{ VK_FORMAT_D32_SFLOAT };
     };
 }
