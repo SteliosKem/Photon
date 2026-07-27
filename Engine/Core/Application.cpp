@@ -54,6 +54,16 @@ namespace Photon {
         }
 
         Logger::info("Created surface.");
+        
+        if (m_physical_device = find_physical_device(); !m_physical_device) {
+            Logger::error("No appropriate physical device found.");
+            return false;
+        }
+
+        VkPhysicalDeviceProperties properties{};
+        vkGetPhysicalDeviceProperties(m_physical_device, &properties);
+
+        Logger::info("Found device: " + string(properties.deviceName));
 
     }
 
@@ -119,6 +129,28 @@ namespace Photon {
 
     void Application::volk_finalize() {
 
+    }
+
+
+    VkPhysicalDevice Application::find_physical_device() {
+        u32 device_count{ 0 };
+        vkEnumeratePhysicalDevices(m_vulkan_instance, &device_count, nullptr);
+        vector<VkPhysicalDevice> devices(device_count);
+        vkEnumeratePhysicalDevices(m_vulkan_instance, &device_count, devices.data());
+
+        VkPhysicalDevice device{ nullptr };
+        if (device_count) {
+            device = devices[0];
+            for (VkPhysicalDevice& dev : devices) {
+                VkPhysicalDeviceProperties properties{};
+                vkGetPhysicalDeviceProperties(dev, &properties);
+                if (properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU) {
+                    device = dev;
+                    break;
+                }
+            }
+        }
+        return device;
     }
 
     VKAPI_ATTR VkBool32 VKAPI_CALL Application::debug_callback(

@@ -31,6 +31,8 @@ namespace Photon {
         void volk_load_instance(VkInstance instance);
         void volk_finalize();
 
+        VkPhysicalDevice find_physical_device();
+
         static VKAPI_ATTR VkBool32 VKAPI_CALL debug_callback(
             VkDebugUtilsMessageSeverityFlagBitsEXT message_severity,
             VkDebugUtilsMessageTypeFlagsEXT message_type,
@@ -44,6 +46,7 @@ namespace Photon {
 
         VkInstance m_vulkan_instance;
         VkSurfaceKHR m_surface;
+        VkPhysicalDevice m_physical_device;
 
         constexpr static u32 VULKAN_VERSION{ VK_API_VERSION_1_4 };
         constexpr static u32 MAX_FRAMES_IN_FLIGHT{ 2 };
