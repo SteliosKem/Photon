@@ -70,6 +70,13 @@ namespace Photon {
         }
 
         Logger::info("Found graphics queue.");
+
+        if (!create_device()) {
+            Logger::error("Failed to create logical device.");
+            return false;
+        }
+
+        Logger::info("Created logical device.");
     }
 
     bool Application::create_vulkan_instance() {
@@ -145,6 +152,81 @@ namespace Photon {
             }
         }
         return false;
+    }
+
+    bool Application::create_device() {
+        VkPhysicalDeviceVulkan14Features supported_features_14{
+            .sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_4_FEATURES,
+            .pNext = nullptr
+        };
+        VkPhysicalDeviceVulkan13Features supported_features_13{
+            .sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_3_FEATURES,
+            .pNext = &supported_features_14
+        };
+        VkPhysicalDeviceVulkan12Features supported_features_12{
+            .sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_2_FEATURES,
+            .pNext = &supported_features_13
+        };
+        VkPhysicalDeviceFeatures2 supported_features {
+            .sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2,
+            .pNext = &supported_features_12
+        };
+        vkGetPhysicalDeviceFeatures2(m_physical_device, &supported_features);
+
+        if (!supported_features_13.dynamicRendering || !supported_features_13.synchronization2
+            || !supported_features_12.timelineSemaphore) {
+            Logger::error("Physical device does not meet feature requirements.");
+            return false;
+        }
+
+        VkPhysicalDeviceVulkan14Features features_14{
+            .sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_4_FEATURES,
+            .pNext = nullptr
+        };
+        VkPhysicalDeviceVulkan13Features features_13{
+            .sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_3_FEATURES,
+            .pNext = &features_14,
+            .synchronization2 = VK_TRUE,
+            .dynamicRendering = VK_TRUE
+        };
+        VkPhysicalDeviceVulkan12Features features_12{
+            .sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_2_FEATURES,
+            .pNext = &features_13,
+            .timelineSemaphore = VK_TRUE
+        };
+        VkPhysicalDeviceFeatures2 features{
+            .sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_FEATURES_2,
+            .pNext = &features_12
+        };
+
+        vector<f32> queue_priorities{ 1.0f };
+        VkDeviceQueueCreateInfo graphics_queue_info{
+            .sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
+            .queueFamilyIndex = m_graphics_queue_family_index,
+            .queueCount = 1,
+            .pQueuePriorities = queue_priorities.data()
+        };
+
+        const vector<const char*> device_extensions{ VK_KHR_SWAPCHAIN_EXTENSION_NAME };
+        VkDeviceCreateInfo device_create_info{
+            .sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
+            .pNext = &features,
+            .queueCreateInfoCount = 1,
+            .pQueueCreateInfos = &graphics_queue_info,
+            .enabledExtensionCount = static_cast<u32>(device_extensions.size()),
+            .ppEnabledExtensionNames = device_extensions.data(),
+            .pEnabledFeatures = nullptr
+        };
+
+        if (vkCreateDevice(m_physical_device, &device_create_info, nullptr, &m_device) != VK_SUCCESS)
+            return false;
+
+        vkGetDeviceQueue(m_device, m_graphics_queue_family_index, 0, &m_graphics_queue);
+        if (!m_graphics_queue) {
+            Logger::error("Could not retrieve graphics queue.");
+            return false;
+        }
+        return true;
     }
 
     void Application::volk_load_instance(VkInstance instance) {

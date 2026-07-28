@@ -28,6 +28,7 @@ namespace Photon {
         bool init_volk();
         bool create_surface();
         bool find_graphics_queue();
+        bool create_device();
 
         void volk_load_instance(VkInstance instance);
         void volk_finalize();
@@ -50,6 +51,7 @@ namespace Photon {
         VkPhysicalDevice m_physical_device{ nullptr };
         u32 m_graphics_queue_family_index{ UINT32_MAX };
         VkQueue m_graphics_queue{ nullptr };
+        VkDevice m_device{ nullptr };
 
         constexpr static u32 VULKAN_VERSION{ VK_API_VERSION_1_4 };
         constexpr static u32 MAX_FRAMES_IN_FLIGHT{ 2 };
