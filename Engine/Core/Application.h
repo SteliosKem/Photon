@@ -3,6 +3,14 @@
 #include "Window.h"
 #include "Pipeline.h"
 
+#define VK_NO_PROTOTYPES
+#define GLFW_INCLUDE_VULKAN
+#include <GLFW/glfw3.h>
+#include <iostream>
+
+struct VmaAllocator_T;
+typedef struct VmaAllocator_T* VmaAllocator;
+
 namespace Photon {
     struct ApplicationInfo {
         string name;
@@ -25,13 +33,14 @@ namespace Photon {
         // Vulkan Initialization
         bool init_vulkan();
         bool create_vulkan_instance();
-        bool init_volk();
+        //bool init_volk();
         bool create_surface();
         bool find_graphics_queue();
         bool create_device();
+        bool init_vma();
 
-        void volk_load_instance(VkInstance instance);
-        void volk_finalize();
+        //void volk_load_instance(VkInstance instance);
+        //void volk_finalize();
 
         VkPhysicalDevice find_physical_device();
 
@@ -52,6 +61,7 @@ namespace Photon {
         u32 m_graphics_queue_family_index{ UINT32_MAX };
         VkQueue m_graphics_queue{ nullptr };
         VkDevice m_device{ nullptr };
+        VmaAllocator m_vma_allocator{ nullptr };
 
         constexpr static u32 VULKAN_VERSION{ VK_API_VERSION_1_4 };
         constexpr static u32 MAX_FRAMES_IN_FLIGHT{ 2 };

@@ -24,7 +24,7 @@ set(GLFW_INSTALL OFF CACHE BOOL "" FORCE)
 # ---- Dependencies ----
 find_package(glm REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
-find_package(Vulkan REQUIRED COMPONENTS volk)
+find_package(Vulkan REQUIRED COMPONENTS volk shaderc_combined)
 
 # ---- Targets ----
 add_subdirectory("ThirdParty/glfw")

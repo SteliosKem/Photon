@@ -1,5 +1,8 @@
 #include "Window.h"
 
+#define GLFW_INCLUDE_VULKAN
+#include <GLFW/glfw3.h>
+
 namespace Photon {
     Window::Window(const WindowInfo& window_info) : m_info{ window_info } {
         init_window();

@@ -20,6 +20,8 @@ target_link_libraries(PhotonEngine
 PUBLIC
     glm::glm
     Vulkan::Vulkan
+    Vulkan::volk
+    Vulkan::shaderc_combined
     glfw
     spdlog::spdlog
 )

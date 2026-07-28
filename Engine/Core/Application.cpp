@@ -5,6 +5,11 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
+#define VOLK_IMPLEMENTATION
+#include <Volk/volk.h>
+#define VMA_IMPLEMENTATION
+#include <vma/vk_mem_alloc.h>
+
 const Filepath VERTEX_PATH = "Shaders/basicVertex.vert.spv";
 const Filepath FRAGMENT_PATH = "Shaders/basicFragment.frag.spv";
 
@@ -30,10 +35,18 @@ namespace Photon {
     }
 
     void Application::shutdown() {
-        if (m_vulkan_instance) {
+        if (m_vma_allocator)
+            vmaDestroyAllocator(m_vma_allocator);
+
+        if (m_surface)
+            vkDestroySurfaceKHR(m_vulkan_instance, m_surface, nullptr);
+
+        if (m_device)
+            vkDestroyDevice(m_device, nullptr);
+
+        if (m_vulkan_instance)
             vkDestroyInstance(m_vulkan_instance, nullptr);
-        }
-        volk_finalize();
+        volkFinalize();
 
         m_window.destroy_window();
         glfwTerminate();
@@ -77,10 +90,17 @@ namespace Photon {
         }
 
         Logger::info("Created logical device.");
+
+        if (!init_vma()) {
+            Logger::error("Failed to create Vulkan Memory Allocator.");
+            return false;
+        }
+
+        Logger::info("Created Vulkan Memory Allocator.");
     }
 
     bool Application::create_vulkan_instance() {
-        if (!init_volk()) {
+        if (volkInitialize() != VK_SUCCESS) {
             Logger::error("Failed to initialize Volk.");
             return false;
         }
@@ -122,11 +142,7 @@ namespace Photon {
 
         if (vkCreateInstance(&create_info, nullptr, &m_vulkan_instance) != VK_SUCCESS) return false;
 
-        volk_load_instance(m_vulkan_instance);
-        return true;
-    }
-
-    bool Application::init_volk() {
+        volkLoadInstance(m_vulkan_instance);
         return true;
     }
 
@@ -229,14 +245,22 @@ namespace Photon {
         return true;
     }
 
-    void Application::volk_load_instance(VkInstance instance) {
+    bool Application::init_vma() {
+        VmaVulkanFunctions vma_function_info{};
+        VmaAllocatorCreateInfo vma_allocator_info{
+            .flags = VMA_ALLOCATOR_CREATE_BUFFER_DEVICE_ADDRESS_BIT,
+            .physicalDevice = m_physical_device,
+            .device = m_device,
+            .pVulkanFunctions = &vma_function_info,
+            .instance = m_vulkan_instance,
+            .vulkanApiVersion = VULKAN_VERSION
+        };
 
+        vmaImportVulkanFunctionsFromVolk(&vma_allocator_info, &vma_function_info);
+
+        if (vmaCreateAllocator(&vma_allocator_info, &m_vma_allocator) != VK_SUCCESS) return false;
+        return true;
     }
-
-    void Application::volk_finalize() {
-
-    }
-
 
     VkPhysicalDevice Application::find_physical_device() {
         u32 device_count{ 0 };
