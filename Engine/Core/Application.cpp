@@ -41,7 +41,6 @@ namespace Photon {
 
     bool Application::init_vulkan() {
         if (!create_vulkan_instance()) {
-            // Temp logging
             Logger::error("Failed to create Vulkan instance.");
             return false;
         }
@@ -65,6 +64,12 @@ namespace Photon {
 
         Logger::info("Found device: " + string(properties.deviceName));
 
+        if (!find_graphics_queue()) {
+            Logger::error("No compatible graphics queue found.");
+            return false;
+        }
+
+        Logger::info("Found graphics queue.");
     }
 
     bool Application::create_vulkan_instance() {
@@ -120,6 +125,25 @@ namespace Photon {
 
     bool Application::create_surface() {
         if (!glfwCreateWindowSurface(m_vulkan_instance, m_window.m_window, nullptr, &m_surface)) return true;
+        return false;
+    }
+
+    bool Application::find_graphics_queue() {
+        u32 queue_family_count{ 0 };
+        vkGetPhysicalDeviceQueueFamilyProperties2(m_physical_device, &queue_family_count, nullptr);
+        vector<VkQueueFamilyProperties2> family_props(queue_family_count, { .sType = VK_STRUCTURE_TYPE_QUEUE_FAMILY_PROPERTIES_2 });
+        vkGetPhysicalDeviceQueueFamilyProperties2(m_physical_device, &queue_family_count, family_props.data());
+
+        for (u32 family_index{ 0 }; family_index < queue_family_count; family_index++) {
+            VkBool32 has_presentation_support{ VK_FALSE };
+            vkGetPhysicalDeviceSurfaceSupportKHR(m_physical_device, family_index, m_surface, &has_presentation_support);
+
+            const auto& props = family_props[family_index];
+            if (props.queueFamilyProperties.queueFlags & VK_QUEUE_GRAPHICS_BIT && has_presentation_support) {
+                m_graphics_queue_family_index = family_index;
+                return true;
+            }
+        }
         return false;
     }
 

@@ -27,6 +27,7 @@ namespace Photon {
         bool create_vulkan_instance();
         bool init_volk();
         bool create_surface();
+        bool find_graphics_queue();
 
         void volk_load_instance(VkInstance instance);
         void volk_finalize();
@@ -44,9 +45,11 @@ namespace Photon {
         ApplicationInfo m_app_info;
         Pipeline m_pipeline;
 
-        VkInstance m_vulkan_instance;
-        VkSurfaceKHR m_surface;
-        VkPhysicalDevice m_physical_device;
+        VkInstance m_vulkan_instance{ nullptr };
+        VkSurfaceKHR m_surface{ nullptr };
+        VkPhysicalDevice m_physical_device{ nullptr };
+        u32 m_graphics_queue_family_index{ UINT32_MAX };
+        VkQueue m_graphics_queue{ nullptr };
 
         constexpr static u32 VULKAN_VERSION{ VK_API_VERSION_1_4 };
         constexpr static u32 MAX_FRAMES_IN_FLIGHT{ 2 };
