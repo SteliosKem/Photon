@@ -377,6 +377,49 @@ namespace Photon {
             }
         }
 
+        VkImageCreateInfo depth_create_info{
+            .sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO,
+            .imageType = VK_IMAGE_TYPE_2D,
+            .format = DEPTH_FORMAT,
+            .extent{
+                .width = m_swapchain_width,
+                .height = m_swapchain_height,
+                .depth = 1
+            },
+            .mipLevels = 1,
+            .arrayLayers = 1,
+            .samples = VK_SAMPLE_COUNT_1_BIT,
+            .usage = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT,
+            .initialLayout = VK_IMAGE_LAYOUT_UNDEFINED
+        };
+
+        VmaAllocationCreateInfo alloc_info{
+            .flags = VMA_ALLOCATION_CREATE_DEDICATED_MEMORY_BIT,
+            .usage = VMA_MEMORY_USAGE_AUTO
+        };
+
+        if (vmaCreateImage(m_vma_allocator, &depth_create_info, &alloc_info, &m_depth_image,
+            &m_depth_image_allocation, nullptr) != VK_SUCCESS) {
+            Logger::error("Failed to allocate depth image.");
+        }
+
+        VkImageViewCreateInfo depth_img_view_info{
+            .sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
+            .image = m_depth_image,
+            .viewType = VK_IMAGE_VIEW_TYPE_2D,
+            .format = DEPTH_FORMAT,
+            .subresourceRange{
+                .aspectMask = VK_IMAGE_ASPECT_DEPTH_BIT,
+                .levelCount = 1,
+                .layerCount = 1
+            }
+        };
+
+        if (vkCreateImageView(m_device, &depth_img_view_info, nullptr, &m_depth_image_view) != VK_SUCCESS) {
+            Logger::error("Failed to create depth image view");
+            return false;
+        }
+
         return true;
     }
 

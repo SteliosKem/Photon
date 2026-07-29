@@ -10,6 +10,8 @@
 
 struct VmaAllocator_T;
 typedef struct VmaAllocator_T* VmaAllocator;
+struct VmaAllocation_T;
+typedef struct VmaAllocation_T* VmaAllocation;
 
 namespace Photon {
     struct ApplicationInfo {
@@ -63,6 +65,10 @@ namespace Photon {
         vector<VkImage> m_swapchain_images{};
         vector<VkImageView> m_swapchin_image_views{};
         vector<VkSemaphore> m_render_complete_semaphores{};
+
+        VkImage m_depth_image{ nullptr };
+        VkImageView m_depth_image_view{ nullptr };
+        VmaAllocation m_depth_image_allocation{ nullptr };
 
         u32 m_width{ 800 };
         u32 m_height{ 600 };
