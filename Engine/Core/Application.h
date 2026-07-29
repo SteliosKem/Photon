@@ -30,17 +30,13 @@ namespace Photon {
         bool init();
         void shutdown();
 
-        // Vulkan Initialization
         bool init_vulkan();
         bool create_vulkan_instance();
-        //bool init_volk();
         bool create_surface();
         bool find_graphics_queue();
         bool create_device();
         bool init_vma();
-
-        //void volk_load_instance(VkInstance instance);
-        //void volk_finalize();
+        bool create_swapchain(u32 width, u32 height);
 
         VkPhysicalDevice find_physical_device();
 
@@ -62,6 +58,17 @@ namespace Photon {
         VkQueue m_graphics_queue{ nullptr };
         VkDevice m_device{ nullptr };
         VmaAllocator m_vma_allocator{ nullptr };
+
+        VkSwapchainKHR m_swapchain{ nullptr };
+        vector<VkImage> m_swapchain_images{};
+        vector<VkImageView> m_swapchin_image_views{};
+        vector<VkSemaphore> m_render_complete_semaphores{};
+
+        u32 m_width{ 800 };
+        u32 m_height{ 600 };
+
+        u32 m_swapchain_width{};
+        u32 m_swapchain_height{};
 
         constexpr static u32 VULKAN_VERSION{ VK_API_VERSION_1_4 };
         constexpr static u32 MAX_FRAMES_IN_FLIGHT{ 2 };

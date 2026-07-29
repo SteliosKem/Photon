@@ -97,6 +97,13 @@ namespace Photon {
         }
 
         Logger::info("Created Vulkan Memory Allocator.");
+
+        if (!create_swapchain(m_width, m_height)) {
+            Logger::error("Failed to create swapchain.");
+            return false;
+        }
+
+        Logger::info("Created swapchain.");
     }
 
     bool Application::create_vulkan_instance() {
@@ -280,7 +287,97 @@ namespace Photon {
                 }
             }
         }
+
+        u32 format_count{ 0 };
+        vkGetPhysicalDeviceSurfaceFormatsKHR(device, m_surface, &format_count, nullptr);
+        vector<VkSurfaceFormatKHR> surface_formats(format_count);
+        vkGetPhysicalDeviceSurfaceFormatsKHR(device, m_surface, &format_count, surface_formats.data());
+
+        bool format_supported{ false };
+        for (const VkSurfaceFormatKHR& surface_format : surface_formats) {
+            if (surface_format.format == SWAPCHAIN_FORMAT) {
+                format_supported = true;
+                break;
+            }
+        }
+        if (!format_supported) {
+            Logger::error("Requested swapchain format is not supported by the surface.");
+            return nullptr;
+        }
+
         return device;
+    }
+
+    bool Application::create_swapchain(u32 width, u32 height) {
+        m_swapchain_width = width;
+        m_swapchain_height = height;
+
+        VkSurfaceCapabilitiesKHR surface_capabilities{};
+        if (vkGetPhysicalDeviceSurfaceCapabilitiesKHR(m_physical_device, m_surface, &surface_capabilities) != VK_SUCCESS) {
+            Logger::error("Could not retrieve surface capabilities.");
+            return false;
+        }
+
+        u32 requested_image_count{ std::max(2u, surface_capabilities.minImageCount) };
+        if (surface_capabilities.maxImageCount > 0)
+            requested_image_count = std::min(requested_image_count, surface_capabilities.maxImageCount);
+        
+        VkSwapchainCreateInfoKHR swapchain_create_info{
+            .sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR,
+            .surface = m_surface,
+            .minImageCount = requested_image_count,
+            .imageFormat = SWAPCHAIN_FORMAT,
+            .imageColorSpace = VK_COLORSPACE_SRGB_NONLINEAR_KHR,
+            .imageExtent{.width = m_swapchain_width, .height = m_swapchain_height },
+            .imageArrayLayers = 1,
+            .imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
+            .preTransform = surface_capabilities.currentTransform,
+            .compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR,
+            .presentMode = VK_PRESENT_MODE_FIFO_KHR
+        };
+
+        if (vkCreateSwapchainKHR(m_device, &swapchain_create_info, nullptr, &m_swapchain) != VK_SUCCESS) {
+            Logger::error("Failed to create swapchain.");
+            return false;
+        }
+
+        u32 image_count{ 0 };
+        vkGetSwapchainImagesKHR(m_device, m_swapchain, &image_count, nullptr);
+        m_swapchain_images.resize(image_count);
+        vkGetSwapchainImagesKHR(m_device, m_swapchain, &image_count, m_swapchain_images.data());
+        m_swapchin_image_views.resize(image_count);
+
+        for (size_t i = 0; i < m_swapchain_images.size(); i++) {
+            VkImageViewCreateInfo img_view_info{
+                .sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
+                .image = m_swapchain_images[i],
+                .viewType = VK_IMAGE_VIEW_TYPE_2D,
+                .format = SWAPCHAIN_FORMAT,
+                .subresourceRange {
+                    .aspectMask = VK_IMAGE_ASPECT_COLOR_BIT,
+                    .baseMipLevel = 0,
+                    .levelCount = 1,
+                    .baseArrayLayer = 0,
+                    .layerCount = 1
+                }
+            };
+
+            if (vkCreateImageView(m_device, &img_view_info, nullptr, &m_swapchin_image_views[i]) != VK_SUCCESS) {
+                Logger::error("Failed to create swapchain image view.");
+                return false;
+            }
+        }
+
+        m_render_complete_semaphores.resize(m_swapchain_images.size());
+        for (VkSemaphore& semaphore : m_render_complete_semaphores) {
+            VkSemaphoreCreateInfo semaphore_info{ .sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO };
+            if (vkCreateSemaphore(m_device, &semaphore_info, nullptr, &semaphore) != VK_SUCCESS) {
+                Logger::error("Failed to create the render-complete semaphore.");
+                return false;
+            }
+        }
+
+        return true;
     }
 
     VKAPI_ATTR VkBool32 VKAPI_CALL Application::debug_callback(
