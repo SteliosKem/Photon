@@ -35,6 +35,8 @@ namespace Photon {
     }
 
     void Application::shutdown() {
+        destroy_swapchain();
+
         if (m_vma_allocator)
             vmaDestroyAllocator(m_vma_allocator);
 
@@ -421,6 +423,27 @@ namespace Photon {
         }
 
         return true;
+    }
+
+    void Application::destroy_swapchain() {
+        for (VkImageView swapchain_img_view : m_swapchin_image_views)
+            vkDestroyImageView(m_device, swapchain_img_view, nullptr);
+        m_swapchin_image_views.clear();
+
+        for (VkSemaphore& semaphore : m_render_complete_semaphores)
+            vkDestroySemaphore(m_device, semaphore, nullptr);
+        m_render_complete_semaphores.clear();
+
+        if (m_swapchain) {
+            vkDestroySwapchainKHR(m_device, m_swapchain, nullptr);
+            m_swapchain = nullptr;
+        }
+
+        if (m_depth_image_view) {
+            vkDestroyImageView(m_device, m_depth_image_view, nullptr);
+            vmaDestroyImage(m_vma_allocator, m_depth_image, m_depth_image_allocation);
+            m_depth_image_view = nullptr;
+        }
     }
 
     VKAPI_ATTR VkBool32 VKAPI_CALL Application::debug_callback(

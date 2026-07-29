@@ -40,6 +40,8 @@ namespace Photon {
         bool init_vma();
         bool create_swapchain(u32 width, u32 height);
 
+        void destroy_swapchain();
+
         VkPhysicalDevice find_physical_device();
 
         static VKAPI_ATTR VkBool32 VKAPI_CALL debug_callback(
