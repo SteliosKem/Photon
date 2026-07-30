@@ -14,7 +14,7 @@ add_library(PhotonEngine STATIC
     RayTracing/BVH.cpp
     RayTracing/Texture.cpp
     RayTracing/ConstantMedium.cpp
-)
+ "Core/Shader.h" "Core/Shader.cpp")
 
 target_link_libraries(PhotonEngine
 PUBLIC

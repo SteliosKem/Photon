@@ -8,6 +8,8 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
+#include "Shader.h"
+
 struct VmaAllocator_T;
 typedef struct VmaAllocator_T* VmaAllocator;
 struct VmaAllocation_T;
@@ -39,6 +41,7 @@ namespace Photon {
         bool create_device();
         bool init_vma();
         bool create_swapchain(u32 width, u32 height);
+        bool create_shaders();
 
         void destroy_swapchain();
 
@@ -71,6 +74,9 @@ namespace Photon {
         VkImage m_depth_image{ nullptr };
         VkImageView m_depth_image_view{ nullptr };
         VmaAllocation m_depth_image_allocation{ nullptr };
+
+        shared_ptr<Shader> m_vertex_shader{ nullptr };
+        shared_ptr<Shader> m_fragment_shader{ nullptr };
 
         u32 m_width{ 800 };
         u32 m_height{ 600 };

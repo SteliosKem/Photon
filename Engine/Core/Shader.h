@@ -1,0 +1,28 @@
+#pragma once
+
+#include "Common.h"
+
+struct VkShaderModule_T;
+typedef struct VkShaderModule_T* VkShaderModule;
+struct VkDevice_T;
+typedef struct VkDevice_T* VkDevice;
+
+namespace Photon {
+	enum class ShaderType {
+		FRAGMENT,
+		VERTEX,
+		COMPUTE
+	};
+
+	class Shader {
+	public:
+		Shader() = delete;
+		Shader(const Filepath& path, ShaderType type, const VkDevice& device);
+
+		~Shader();
+
+		bool exists() const;
+	private:
+		VkShaderModule m_shader{ nullptr };
+	};
+}

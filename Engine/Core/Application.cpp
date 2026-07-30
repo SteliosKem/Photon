@@ -106,6 +106,12 @@ namespace Photon {
         }
 
         Logger::info("Created swapchain.");
+
+        if (!create_shaders()) {
+            Logger::error("Failed to create shaders.");
+        }
+
+        Logger::info("Created shaders.");
     }
 
     bool Application::create_vulkan_instance() {
@@ -422,6 +428,12 @@ namespace Photon {
             return false;
         }
 
+        return true;
+    }
+
+    bool Application::create_shaders() {
+        if (m_vertex_shader = make_shared<Shader>(VERTEX_PATH, ShaderType::VERTEX, m_device); !m_vertex_shader->exists()) return false;
+        if (m_fragment_shader = make_shared<Shader>(FRAGMENT_PATH, ShaderType::FRAGMENT, m_device); !m_fragment_shader->exists()) return false;
         return true;
     }
 
