@@ -48,4 +48,5 @@ namespace Photon {
 	Shader::~Shader() {}
 
 	bool Shader::exists() const { return m_shader != nullptr; }
+	VkShaderModule Shader::get_vk_shader() { return m_shader; }
 }

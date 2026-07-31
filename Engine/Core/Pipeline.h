@@ -1,14 +1,29 @@
 #pragma once
 #include "Common.h"
+#include "Shader.h"
+
+struct VkDevice_T;
+typedef struct VkDevice_T* VkDevice;
+struct VkPipelineLayout_T;
+typedef struct VkPipelineLayout_T* VkPipelineLayout;
+struct VkPipeline_T;
+typedef struct VkPipeline_T* VkPipeline;
 
 namespace Photon {
     class Pipeline {
     public:
         Pipeline() = delete;
-        Pipeline(const Filepath& vertex_shader, const Filepath& fragment_shader);
+        Pipeline(const VkDevice& device, const string& vertex_path, const string& fragment_path);
 
         ~Pipeline();
     private:
-        void create_graphics_pipeline(const Filepath& vertex_shader, const Filepath& fragment_shader);
+        bool create_shaders(const VkDevice& device, const string& vertex_path, const string& fragment_path);
+        void create_graphics_pipeline(const VkDevice& device);
+    private:
+        shared_ptr<Shader> m_vertex_shader{ nullptr };
+        shared_ptr<Shader> m_fragment_shader{ nullptr };
+
+        VkPipelineLayout m_layout{ nullptr };
+        VkPipeline m_pipeline{ nullptr };
     };
 }

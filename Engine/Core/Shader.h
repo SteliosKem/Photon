@@ -22,6 +22,7 @@ namespace Photon {
 		~Shader();
 
 		bool exists() const;
+		VkShaderModule get_vk_shader();
 	private:
 		VkShaderModule m_shader{ nullptr };
 	};

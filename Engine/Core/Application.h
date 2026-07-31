@@ -41,7 +41,6 @@ namespace Photon {
         bool create_device();
         bool init_vma();
         bool create_swapchain(u32 width, u32 height);
-        bool create_shaders();
 
         void destroy_swapchain();
 
@@ -56,7 +55,6 @@ namespace Photon {
     private:
         Window m_window;
         ApplicationInfo m_app_info;
-        Pipeline m_pipeline;
 
         VkInstance m_vulkan_instance{ nullptr };
         VkSurfaceKHR m_surface{ nullptr };
@@ -75,8 +73,7 @@ namespace Photon {
         VkImageView m_depth_image_view{ nullptr };
         VmaAllocation m_depth_image_allocation{ nullptr };
 
-        shared_ptr<Shader> m_vertex_shader{ nullptr };
-        shared_ptr<Shader> m_fragment_shader{ nullptr };
+        shared_ptr<Pipeline> m_pipeline;
 
         u32 m_width{ 800 };
         u32 m_height{ 600 };
@@ -86,7 +83,6 @@ namespace Photon {
 
         constexpr static u32 VULKAN_VERSION{ VK_API_VERSION_1_4 };
         constexpr static u32 MAX_FRAMES_IN_FLIGHT{ 2 };
-        constexpr static VkFormat SWAPCHAIN_FORMAT{ VK_FORMAT_B8G8R8A8_SRGB };
         constexpr static VkFormat DEPTH_FORMAT{ VK_FORMAT_D32_SFLOAT };
     };
 }
