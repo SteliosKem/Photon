@@ -2,6 +2,9 @@
 #include "Common.h"
 #include "Logging.h"
 
+#define VK_NO_PROTOTYPES
+#include <volk/volk.h>
+
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
@@ -9,24 +12,33 @@ namespace Photon {
     constexpr static VkFormat SWAPCHAIN_FORMAT{ VK_FORMAT_B8G8R8A8_SRGB };
     constexpr static VkFormat DEPTH_FORMAT{ VK_FORMAT_D32_SFLOAT };
 
-    Pipeline::Pipeline(const VkDevice& device, const string& vertex_path, const string& fragment_path) {
+    Pipeline::Pipeline(VkDevice device, const Filepath& vertex_path, const Filepath& fragment_path) {
+        m_device = device;
         if (!create_shaders(device, vertex_path, fragment_path)) {
             Logger::error("Failed to create shaders.");
+            return;
         }
 
         Logger::info("Created shaders.");
         create_graphics_pipeline(device);
     }
 
-    Pipeline::~Pipeline() {}
+    Pipeline::~Pipeline() {
+        if (m_pipeline) vkDestroyPipeline(m_device, m_pipeline, nullptr);
+        if (m_layout) vkDestroyPipelineLayout(m_device, m_layout, nullptr);
+    }
 
-    bool Pipeline::create_shaders(const VkDevice& device, const string& vertex_path, const string& fragment_path) {
-        if (m_vertex_shader = make_shared<Shader>(vertex_path, ShaderType::VERTEX, device); !m_vertex_shader->exists()) return false;
+    bool Pipeline::create_shaders(VkDevice device, const Filepath& vertex_path, const Filepath& fragment_path) {
+        m_vertex_shader = std::make_shared<Shader>(
+            vertex_path,
+            ShaderType::VERTEX,
+            device);
+        if (!m_vertex_shader->exists()) return false;
         if (m_fragment_shader = make_shared<Shader>(fragment_path, ShaderType::FRAGMENT, device); !m_fragment_shader->exists()) return false;
         return true;
     }
 
-    void Pipeline::create_graphics_pipeline(const VkDevice& device) {
+    void Pipeline::create_graphics_pipeline(VkDevice device) {
         VkPipelineLayoutCreateInfo pipeline_layout_info{
             .sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO,
             .setLayoutCount = 0,

@@ -17,7 +17,7 @@ namespace Photon {
 	class Shader {
 	public:
 		Shader() = delete;
-		Shader(const Filepath& path, ShaderType type, const VkDevice& device);
+		Shader(const Filepath& path, ShaderType type, VkDevice device);
 
 		~Shader();
 
@@ -25,5 +25,7 @@ namespace Photon {
 		VkShaderModule get_vk_shader();
 	private:
 		VkShaderModule m_shader{ nullptr };
+		VkDevice m_device{ nullptr };
+		ShaderType m_type{};
 	};
 }

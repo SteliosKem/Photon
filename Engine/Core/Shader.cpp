@@ -2,9 +2,11 @@
 #include "Logging.h"
 
 #include <shaderc/shaderc.hpp>
-
+#define VK_NO_PROTOTYPES
+#include <volk/volk.h>
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
+#include <iostream>
 
 namespace Photon {
 	static shaderc_shader_kind to_shaderc(ShaderType type) {
@@ -16,8 +18,10 @@ namespace Photon {
 		}
 	}
 
-	Shader::Shader(const Filepath& path, ShaderType type, const VkDevice& device) {
+	Shader::Shader(const Filepath& path, ShaderType type, VkDevice device) {
 		const string source = read_file(path);
+		m_device = device;
+		m_type = type;
 		if (source.empty())
 			Logger::error("Specified shader file does not exist: " + path.string());
 
@@ -33,19 +37,22 @@ namespace Photon {
 		if (res.GetCompilationStatus() != shaderc_compilation_status_success)
 			Logger::error("Shader compilation error: " + res.GetErrorMessage());
 
-		const size_t shader_size = (res.cend() - res.cbegin()) * sizeof(u32);
+		vector<u32> spv{ res.cbegin(), res.cend() };
 		VkShaderModuleCreateInfo module_create_info{
 			.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO,
-			.codeSize = shader_size,
-			.pCode = res.cbegin()
+			.codeSize = spv.size() * sizeof(u32),
+			.pCode = spv.data()
 		};
 
-		if (vkCreateShaderModule(device, &module_create_info, nullptr, &m_shader)) {
+
+		if (vkCreateShaderModule(device, &module_create_info, nullptr, &m_shader) != VK_SUCCESS) {
 			Logger::error("Failed to create shader module.");
 		}
 	}
 
-	Shader::~Shader() {}
+	Shader::~Shader() {
+		if (m_shader) vkDestroyShaderModule(m_device, m_shader, nullptr);
+	}
 
 	bool Shader::exists() const { return m_shader != nullptr; }
 	VkShaderModule Shader::get_vk_shader() { return m_shader; }

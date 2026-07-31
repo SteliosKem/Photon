@@ -83,6 +83,7 @@ namespace Photon {
 
         constexpr static u32 VULKAN_VERSION{ VK_API_VERSION_1_4 };
         constexpr static u32 MAX_FRAMES_IN_FLIGHT{ 2 };
+        constexpr static VkFormat SWAPCHAIN_FORMAT{ VK_FORMAT_B8G8R8A8_SRGB };
         constexpr static VkFormat DEPTH_FORMAT{ VK_FORMAT_D32_SFLOAT };
     };
 }

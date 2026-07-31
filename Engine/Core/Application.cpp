@@ -10,8 +10,8 @@
 #define VMA_IMPLEMENTATION
 #include <vma/vk_mem_alloc.h>
 
-const Filepath VERTEX_PATH = "Shaders/basicVertex.vert.spv";
-const Filepath FRAGMENT_PATH = "Shaders/basicFragment.frag.spv";
+const Filepath VERTEX_PATH = "Shaders/basicVertex.vert";
+const Filepath FRAGMENT_PATH = "Shaders/basicFragment.frag";
 
 namespace Photon {
     Application::Application(const ApplicationInfo& app_info)
@@ -34,6 +34,8 @@ namespace Photon {
     }
 
     void Application::shutdown() {
+        m_pipeline.reset();
+
         destroy_swapchain();
 
         if (m_vma_allocator)
@@ -105,7 +107,8 @@ namespace Photon {
         }
 
         Logger::info("Created swapchain.");
-
+        assert(m_device != VK_NULL_HANDLE);
+        printf("device = %p\n", (void*)m_device);
         m_pipeline = make_shared<Pipeline>(m_device, VERTEX_PATH, FRAGMENT_PATH);
     }
 
@@ -157,8 +160,7 @@ namespace Photon {
     }
 
     bool Application::create_surface() {
-        if (!glfwCreateWindowSurface(m_vulkan_instance, m_window.m_window, nullptr, &m_surface)) return true;
-        return false;
+        return glfwCreateWindowSurface(m_vulkan_instance, m_window.m_window, nullptr, &m_surface) == VK_SUCCESS;
     }
 
     bool Application::find_graphics_queue() {
@@ -246,6 +248,8 @@ namespace Photon {
 
         if (vkCreateDevice(m_physical_device, &device_create_info, nullptr, &m_device) != VK_SUCCESS)
             return false;
+
+        volkLoadDevice(m_device);
 
         vkGetDeviceQueue(m_device, m_graphics_queue_family_index, 0, &m_graphics_queue);
         if (!m_graphics_queue) {
