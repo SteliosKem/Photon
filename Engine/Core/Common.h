@@ -3,11 +3,13 @@
 #include <memory>
 #include <filesystem>
 #include <vector>
+#include <array>
 
 using std::string;
 using std::shared_ptr;
 using std::make_shared;
 using std::vector;
+using std::array;
 using Filepath = std::filesystem::path;
 
 using i32 = int32_t;

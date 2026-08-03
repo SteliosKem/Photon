@@ -34,6 +34,16 @@ namespace Photon {
     }
 
     void Application::shutdown() {
+        vkDeviceWaitIdle(m_device);
+
+        if (m_timeline_semaphore)
+            vkDestroySemaphore(m_device, m_timeline_semaphore, nullptr);
+
+        for (auto& res : m_frame_resources) {
+            vkDestroySemaphore(m_device, res.image_acquired_semaphore, nullptr);
+            vkDestroyCommandPool(m_device, res.command_pool, nullptr);
+        }
+
         m_pipeline.reset();
 
         destroy_swapchain();
@@ -107,9 +117,20 @@ namespace Photon {
         }
 
         Logger::info("Created swapchain.");
-        assert(m_device != VK_NULL_HANDLE);
-        printf("device = %p\n", (void*)m_device);
+
         m_pipeline = make_shared<Pipeline>(m_device, VERTEX_PATH, FRAGMENT_PATH);
+        
+        if (!create_sync_resources()) {
+            Logger::error("Failed to create sync related resources");
+            return;
+        }
+
+        if (!create_command_buffers()) {
+            Logger::error("Failed to create command buffer objects");
+            return false;
+        }
+
+        return true;
     }
 
     bool Application::create_vulkan_instance() {
@@ -430,6 +451,60 @@ namespace Photon {
         return true;
     }
 
+    bool Application::create_sync_resources() {
+        VkSemaphoreTypeCreateInfo semaphore_type_info{
+            .sType = VK_STRUCTURE_TYPE_SEMAPHORE_TYPE_CREATE_INFO,
+            .semaphoreType = VK_SEMAPHORE_TYPE_TIMELINE,
+            .initialValue = MAX_FRAMES_IN_FLIGHT
+        };
+
+        VkSemaphoreCreateInfo semaphore_info{
+            .sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO,
+            .pNext = &semaphore_type_info
+        };
+
+        if (vkCreateSemaphore(m_device, &semaphore_info, nullptr, &m_timeline_semaphore) != VK_SUCCESS) {
+            Logger::error("Unable to create the timeline semaphore.");
+            return false;
+        }
+
+        for (FrameResources& res : m_frame_resources) {
+            VkSemaphoreCreateInfo _semaphore_info{ .sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO };
+            if (vkCreateSemaphore(m_device, &_semaphore_info, nullptr, &res.image_acquired_semaphore) != VK_SUCCESS) {
+                Logger::error("Error creating the per-frame image-acquire semaphore.");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    bool Application::create_command_buffers() {
+        for (FrameResources& res : m_frame_resources) {
+            VkCommandPoolCreateInfo pool_info{
+                .sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO,
+                .queueFamilyIndex = m_graphics_queue_family_index
+            };
+
+            if (vkCreateCommandPool(m_device, &pool_info, nullptr, &res.command_pool) != VK_SUCCESS) {
+                Logger::error("Failed to create command buffer pool.");
+                return false;
+            }
+
+            VkCommandBufferAllocateInfo cmd_alloc_info{
+                .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
+                .commandPool = res.command_pool,
+                .level = VK_COMMAND_BUFFER_LEVEL_PRIMARY,
+                .commandBufferCount = 1
+            };
+
+            if (vkAllocateCommandBuffers(m_device, &cmd_alloc_info, &res.command_buffer) != VK_SUCCESS) {
+                Logger::error("Failed to allocate command buffer.");
+                return false;
+            }
+        }
+        return true;
+    }
+
     void Application::destroy_swapchain() {
         for (VkImageView swapchain_img_view : m_swapchin_image_views)
             vkDestroyImageView(m_device, swapchain_img_view, nullptr);
@@ -462,6 +537,10 @@ namespace Photon {
         }
 
         return VK_FALSE;
+    }
+
+    void Application::render() {
+        
     }
 
     ErrorCode Application::run() {

@@ -14,12 +14,22 @@ struct VmaAllocator_T;
 typedef struct VmaAllocator_T* VmaAllocator;
 struct VmaAllocation_T;
 typedef struct VmaAllocation_T* VmaAllocation;
+struct VkCommandPool_T;
+typedef struct VkCommandPool_T* VkCommandPool;
+struct VkCommandBuffer_T;
+typedef struct VkCommandBuffer_T* VkCommandBuffer;
 
 namespace Photon {
     struct ApplicationInfo {
         string name;
         Version version;
         WindowInfo main_window_info;
+    };
+
+    struct FrameResources {
+        VkCommandPool command_pool{ nullptr };
+        VkCommandBuffer command_buffer{ nullptr };
+        VkSemaphore image_acquired_semaphore{ nullptr };
     };
 
     class Application {
@@ -41,6 +51,10 @@ namespace Photon {
         bool create_device();
         bool init_vma();
         bool create_swapchain(u32 width, u32 height);
+        bool create_sync_resources();
+        bool create_command_buffers();
+
+        void render();
 
         void destroy_swapchain();
 
@@ -81,9 +95,14 @@ namespace Photon {
         u32 m_swapchain_width{};
         u32 m_swapchain_height{};
 
+        bool m_require_swapchain_recreate{ false };
+
         constexpr static u32 VULKAN_VERSION{ VK_API_VERSION_1_4 };
         constexpr static u32 MAX_FRAMES_IN_FLIGHT{ 2 };
         constexpr static VkFormat SWAPCHAIN_FORMAT{ VK_FORMAT_B8G8R8A8_SRGB };
         constexpr static VkFormat DEPTH_FORMAT{ VK_FORMAT_D32_SFLOAT };
+
+        VkSemaphore m_timeline_semaphore{ nullptr };
+        array<FrameResources, MAX_FRAMES_IN_FLIGHT> m_frame_resources;
     };
 }
