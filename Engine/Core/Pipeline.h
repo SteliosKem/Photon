@@ -15,6 +15,8 @@ namespace Photon {
         Pipeline() = delete;
         Pipeline(VkDevice device, const Filepath& vertex_path, const Filepath& fragment_path);
 
+        VkPipeline get();
+
         ~Pipeline();
     private:
         bool create_shaders(VkDevice device, const Filepath& vertex_path, const Filepath& fragment_path);

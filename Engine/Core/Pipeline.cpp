@@ -149,4 +149,6 @@ namespace Photon {
             Logger::error("Error creating the graphics pipeline.");
         }
     }
+
+    VkPipeline Pipeline::get() { return m_pipeline; }
 }

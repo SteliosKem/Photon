@@ -67,6 +67,11 @@ namespace Photon {
             void* user_data
         );
     private:
+        constexpr static u32 VULKAN_VERSION{ VK_API_VERSION_1_4 };
+        constexpr static u32 MAX_FRAMES_IN_FLIGHT{ 2 };
+        constexpr static VkFormat SWAPCHAIN_FORMAT{ VK_FORMAT_B8G8R8A8_SRGB };
+        constexpr static VkFormat DEPTH_FORMAT{ VK_FORMAT_D32_SFLOAT };
+
         Window m_window;
         ApplicationInfo m_app_info;
 
@@ -95,14 +100,12 @@ namespace Photon {
         u32 m_swapchain_width{};
         u32 m_swapchain_height{};
 
-        bool m_require_swapchain_recreate{ false };
 
-        constexpr static u32 VULKAN_VERSION{ VK_API_VERSION_1_4 };
-        constexpr static u32 MAX_FRAMES_IN_FLIGHT{ 2 };
-        constexpr static VkFormat SWAPCHAIN_FORMAT{ VK_FORMAT_B8G8R8A8_SRGB };
-        constexpr static VkFormat DEPTH_FORMAT{ VK_FORMAT_D32_SFLOAT };
+        bool m_require_swapchain_recreate{ false };
 
         VkSemaphore m_timeline_semaphore{ nullptr };
         array<FrameResources, MAX_FRAMES_IN_FLIGHT> m_frame_resources;
+        uint64_t m_frame_index = 0;
+        uint64_t m_next_signal_value = MAX_FRAMES_IN_FLIGHT + 1;
     };
 }
