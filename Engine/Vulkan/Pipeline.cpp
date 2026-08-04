@@ -1,51 +1,51 @@
 #include "Pipeline.h"
-#include "Common.h"
-#include "Logging.h"
+#include "Core/Common.h"
+#include "Core/Logging.h"
 
 #define VK_NO_PROTOTYPES
-#include <volk/volk.h>
-
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
-namespace Photon {
-    constexpr static VkFormat SWAPCHAIN_FORMAT{ VK_FORMAT_B8G8R8A8_SRGB };
-    constexpr static VkFormat DEPTH_FORMAT{ VK_FORMAT_D32_SFLOAT };
+#include <Volk/volk.h>
 
-    Pipeline::Pipeline(VkDevice device, const Filepath& vertex_path, const Filepath& fragment_path) {
-        m_device = device;
-        if (!create_shaders(device, vertex_path, fragment_path)) {
+namespace Photon {
+    Pipeline::Pipeline(shared_ptr<VulkanContext> context, const Filepath& vertex_path, const Filepath& fragment_path) {
+        m_context = context;
+        if (!create_shaders(vertex_path, fragment_path)) {
             Logger::error("Failed to create shaders.");
+            m_error = true;
             return;
         }
 
         Logger::info("Created shaders.");
-        create_graphics_pipeline(device);
+        create_graphics_pipeline();
     }
 
     Pipeline::~Pipeline() {
-        if (m_pipeline) vkDestroyPipeline(m_device, m_pipeline, nullptr);
-        if (m_layout) vkDestroyPipelineLayout(m_device, m_layout, nullptr);
+        if (m_pipeline) vkDestroyPipeline(m_context->device(), m_pipeline, nullptr);
+        if (m_layout) vkDestroyPipelineLayout(m_context->device(), m_layout, nullptr);
     }
 
-    bool Pipeline::create_shaders(VkDevice device, const Filepath& vertex_path, const Filepath& fragment_path) {
+    bool Pipeline::create_shaders(const Filepath& vertex_path, const Filepath& fragment_path) {
         m_vertex_shader = std::make_shared<Shader>(
             vertex_path,
             ShaderType::VERTEX,
-            device);
+            m_context->device());
         if (!m_vertex_shader->exists()) return false;
-        if (m_fragment_shader = make_shared<Shader>(fragment_path, ShaderType::FRAGMENT, device); !m_fragment_shader->exists()) return false;
+        if (m_fragment_shader = make_shared<Shader>(fragment_path, ShaderType::FRAGMENT, m_context->device()); !m_fragment_shader->exists()) return false;
         return true;
     }
 
-    void Pipeline::create_graphics_pipeline(VkDevice device) {
+    void Pipeline::create_graphics_pipeline() {
         VkPipelineLayoutCreateInfo pipeline_layout_info{
             .sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO,
             .setLayoutCount = 0,
             .pushConstantRangeCount = 0
         };
-        if (vkCreatePipelineLayout(device, &pipeline_layout_info, nullptr, &m_layout) != VK_SUCCESS) {
+        if (vkCreatePipelineLayout(m_context->device(), &pipeline_layout_info, nullptr, &m_layout) != VK_SUCCESS) {
             Logger::error("Failed to create the pipeline layout.");
+            m_error = true;
+            return;
         }
 
         const char* entrypoint = "main";
@@ -124,8 +124,8 @@ namespace Photon {
         VkPipelineRenderingCreateInfo render_info{
             .sType = VK_STRUCTURE_TYPE_PIPELINE_RENDERING_CREATE_INFO,
             .colorAttachmentCount = 1,
-            .pColorAttachmentFormats = &SWAPCHAIN_FORMAT,
-            .depthAttachmentFormat = DEPTH_FORMAT
+            .pColorAttachmentFormats = &VulkanContext::SWAPCHAIN_FORMAT,
+            .depthAttachmentFormat = VulkanContext::DEPTH_FORMAT
         };
 
         VkGraphicsPipelineCreateInfo pipeline_info{
@@ -145,10 +145,12 @@ namespace Photon {
             .renderPass = VK_NULL_HANDLE
         };
 
-        if (vkCreateGraphicsPipelines(device, nullptr, 1, &pipeline_info, nullptr, &m_pipeline) != VK_SUCCESS) {
+        if (vkCreateGraphicsPipelines(m_context->device(), nullptr, 1, &pipeline_info, nullptr, &m_pipeline) != VK_SUCCESS) {
             Logger::error("Error creating the graphics pipeline.");
+            m_error = true;
         }
     }
 
     VkPipeline Pipeline::get() { return m_pipeline; }
+    ErrorCode Pipeline::ok() const { return m_error ? ErrorCode::GENERAL_ERROR : ErrorCode::OK; }
 }

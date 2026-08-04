@@ -1,5 +1,4 @@
 #include <iostream>
-#include <vulkan/vulkan.h>
 #include "Core/Application.h"
 
 using namespace Photon;

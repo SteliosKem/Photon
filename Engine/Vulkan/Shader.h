@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Common.h"
+#include "Core/Common.h"
 
 struct VkShaderModule_T;
 typedef struct VkShaderModule_T* VkShaderModule;

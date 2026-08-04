@@ -1,12 +1,14 @@
 #include "Shader.h"
-#include "Logging.h"
+#include "Core/Logging.h"
 
 #include <shaderc/shaderc.hpp>
+
 #define VK_NO_PROTOTYPES
-#include <volk/volk.h>
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
-#include <iostream>
+
+#include <Volk/volk.h>
+#include <vma/vk_mem_alloc.h>
 
 namespace Photon {
 	static shaderc_shader_kind to_shaderc(ShaderType type) {

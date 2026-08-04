@@ -5,11 +5,10 @@
 struct GLFWwindow;
 
 namespace Photon {
-    struct WindowInfo {
-        u32 width{ 800 };
-        u32 height{ 600 };
-        string title{ "Photon Engine" };
-        bool resizable{ true };
+    class GLFWContext {
+    public:
+        static void init();
+        static void terminate();
     };
 
     class Window {
@@ -19,12 +18,14 @@ namespace Photon {
 
         ~Window();
 
+        void poll();
         bool should_close() const;
-    private:
-        friend class Application;
+        GLFWwindow* get_native();
+        u32 width() const;
+        u32 height() const;
 
-        void init_window();
-        void destroy_window();
+        void init();
+        void destroy();
     private:
         WindowInfo m_info;
         GLFWwindow* m_window;

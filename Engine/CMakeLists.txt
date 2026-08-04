@@ -4,7 +4,7 @@ add_library(PhotonEngine STATIC
     Core/Common.cpp
     Core/Window.cpp
     Core/Application.cpp
-    Core/Pipeline.cpp
+    "Vulkan/Pipeline.cpp"
     Core/Logging.cpp
 
     RayTracing/Color.cpp
@@ -14,7 +14,7 @@ add_library(PhotonEngine STATIC
     RayTracing/BVH.cpp
     RayTracing/Texture.cpp
     RayTracing/ConstantMedium.cpp
- "Core/Shader.h" "Core/Shader.cpp")
+ "Vulkan/Shader.h" "Vulkan/Shader.cpp" "Vulkan/Context.h" "Vulkan/Context.cpp" "Vulkan/Swapchain.h" "Vulkan/Swapchain.cpp"  "Vulkan/Renderer.h" "Vulkan/Renderer.cpp")
 
 target_link_libraries(PhotonEngine
 PUBLIC

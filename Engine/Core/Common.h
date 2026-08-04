@@ -7,6 +7,8 @@
 
 using std::string;
 using std::shared_ptr;
+using std::unique_ptr;
+using std::make_unique;
 using std::make_shared;
 using std::vector;
 using std::array;
@@ -30,6 +32,19 @@ namespace Photon {
     enum class ErrorCode {
         OK,
         GENERAL_ERROR
+    };
+
+    struct WindowInfo {
+        u32 width{ 800 };
+        u32 height{ 600 };
+        string title{ "Photon Engine" };
+        bool resizable{ true };
+    };
+
+    struct ApplicationInfo {
+        string name;
+        Version version;
+        WindowInfo main_window_info;
     };
 
     string read_file(const Filepath& path);
